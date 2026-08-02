@@ -1,0 +1,15 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: TlsSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/tlssection
+  labels:
+    testing.upbound.io/example-name: section1
+  name: section1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: Custom TLS Rules

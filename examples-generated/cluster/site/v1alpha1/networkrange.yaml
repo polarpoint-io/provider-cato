@@ -1,0 +1,18 @@
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: NetworkRange
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/networkrange
+  labels:
+    testing.upbound.io/example-name: direct
+  name: direct
+spec:
+  forProvider:
+    interfaceId: "172922"
+    localIp: 192.166.100.1
+    mdnsReflector: true
+    name: Direct Network Range
+    rangeType: Direct
+    siteId: "142382"
+    subnet: 192.166.100.0/24
+    translatedSubnet: 172.166.100.0/24

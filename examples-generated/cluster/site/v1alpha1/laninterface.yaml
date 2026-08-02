@@ -1,0 +1,16 @@
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: LanInterface
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/laninterface
+  labels:
+    testing.upbound.io/example-name: lan6
+  name: lan6
+spec:
+  forProvider:
+    destType: LAN
+    interfaceId: INT_6
+    localIp: 192.168.198.6
+    name: Interface lan 6
+    siteId: "12345"
+    subnet: 192.168.198.0/25

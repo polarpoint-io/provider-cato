@@ -1,0 +1,53 @@
+apiVersion: access.cato.crossplane.io/v1alpha1
+kind: PrivateAccessRuleBulk
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/privateaccessrulebulk
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    ruleData: ${local.rule_data}
+
+---
+
+apiVersion: access.cato.crossplane.io/v1alpha1
+kind: PrivateAccessPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/privateaccessrulebulk
+  labels:
+    testing.upbound.io/example-name: this
+  name: this
+spec:
+  forProvider:
+    enabled: true
+
+---
+
+apiVersion: access.cato.crossplane.io/v1alpha1
+kind: PrivateAccessRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/privateaccessrulebulk
+  labels:
+    testing.upbound.io/example-name: all
+  name: all
+spec:
+  forProvider:
+    action: ${each.value.action}
+    activePeriod: ${each.value.active_period}
+    applications: ${each.value.applications}
+    connectionOrigins: ${each.value.connection_origins}
+    countries: ${each.value.countries}
+    description: ${each.value.description}
+    devices: ${each.value.devices}
+    enabled: ${each.value.enabled}
+    for_each: ${local.rule_data}
+    name: ${each.key}
+    platforms: ${each.value.platforms}
+    schedule: ${each.value.schedule}
+    source: ${each.value.source}
+    tracking: ${each.value.tracking}
+    userAttributes: ${each.value.user_attributes}

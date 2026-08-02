@@ -1,0 +1,15 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: ApplicationControlSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/applicationcontrolsection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: Terraform — Application Control

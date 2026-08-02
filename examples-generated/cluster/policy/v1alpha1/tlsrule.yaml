@@ -1,0 +1,212 @@
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: TlsRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/tlsrule
+  labels:
+    testing.upbound.io/example-name: TLSi_Phase_1
+  name: tlsi-phase-1
+spec:
+  forProvider:
+    at:
+      position: FIRST_IN_SECTION
+      ref: ${cato_tls_section.section2.section.id}
+    rule:
+      action: INSPECT
+      application:
+        customCategory:
+        - name: TLSi_Phase_1
+      connectionOrigin: ANY
+      enabled: true
+      name: TLSi_Phase_1_inspection
+      source:
+        site:
+        - name: Your Site Name
+        usersGroup:
+        - name: Your User Group Here
+      untrustedCertificateAction: ALLOW
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: IfRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/tlsrule
+  labels:
+    testing.upbound.io/example-name: example_kitchen_sink
+  name: example-kitchen-sink
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_SECTION
+      ref: ${cato_tls_section.section1.section.id}
+    rule:
+      action: ALLOW
+      activePeriod:
+        effectiveFrom: 2025-08-09T00:00:00
+        expiresAt: 2026-12-31T23:57:59
+      connectionOrigin: REMOTE
+      country:
+      - id: AG
+      - name: Aruba
+      description: test description
+      destination:
+        appCategory:
+        - name: Anonymizers
+        - name: Authentication Services
+        application:
+        - name: Ebix Inc.
+        - id: fotocasa
+        country:
+        - name: Anguilla
+        - name: Antarctica
+        customApp:
+        - name: Test Custom App
+        customCategory:
+        - name: Test Custom Category
+        - name: RBI-URLs
+        domain:
+        - test.com
+        fqdn:
+        - www.test.com
+        globalIpRange:
+        - name: global_ip_range
+        - name: global_ip_range2
+        ip:
+        - 1.2.3.4
+        ipRange:
+        - from: 1.2.3.4
+          to: 1.2.3.5
+        remoteAsn:
+        - "12"
+        sanctionedAppsCategory:
+        - name: Sanctioned Apps
+        subnet:
+        - 1.2.3.0/24
+      device:
+      - name: Test Device Posture Profile
+      deviceAttributes:
+        category:
+        - IoT
+        - Mobile
+        manufacturer:
+        - ADTRAN
+        - ACTi
+        model:
+        - ' 9'
+        - ' 7+'
+        os:
+        - Aruba OS
+        - Arch Linux
+        type:
+        - Appliance
+        - Analog Telephone Adapter
+      deviceOs:
+      - WINDOWS
+      - MACOS
+      enabled: true
+      name: Internet Firewall Kitchen Sink
+      schedule:
+        activeOn: CUSTOM_RECURRING
+        customRecurring:
+          days:
+          - SUNDAY
+          - WEDNESDAY
+          - SATURDAY
+          - THURSDAY
+          - MONDAY
+          - TUESDAY
+          - FRIDAY
+          from: "02:02:00"
+          to: "03:03:00"
+      service:
+        custom:
+        - port: []
+          portRange:
+            from: "10"
+            to: "50"
+          protocol: UDP
+        - port:
+          - "22"
+          protocol: UDP
+        standard:
+        - name: Amazon EC2
+      source:
+        floatingSubnet:
+        - id: "1474041"
+        - id: "1910541"
+        globalIpRange:
+        - name: global_ip_range
+        - name: global_ip_range2
+        group:
+        - name: test group
+        host:
+        - name: my.hostname25
+        - name: host31
+        ip:
+        - 1.2.3.4
+        ipRange:
+        - from: 1.2.3.4
+          to: 1.2.3.5
+        networkInterface:
+        - id: "124986"
+        - id: "175651"
+        site:
+        - name: 1600LTE
+        - name: "1600"
+        siteNetworkSubnet:
+        - id: TjE3MDE0NDI=
+        - id: TjIyMzcxODI=
+        subnet:
+        - 1.2.3.0/24
+        systemGroup:
+        - name: All SDP Users
+        - name: All Floating Ranges
+        user:
+        - name: test user
+        usersGroup:
+        - name: Operations Team
+      tracking:
+        alert:
+          enabled: true
+          frequency: WEEKLY
+          mailingList:
+          - id: "-100"
+        event:
+          enabled: true
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: TlsSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/tlsrule
+  labels:
+    testing.upbound.io/example-name: section1
+  name: section1
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: Custom TLS Rules
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: TlsSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/tlsrule
+  labels:
+    testing.upbound.io/example-name: section2
+  name: section2
+spec:
+  forProvider:
+    at:
+      position: AFTER_SECTION
+      ref: ${cato_tls_section.section1.section.id}
+    section:
+      name: TLS Phases

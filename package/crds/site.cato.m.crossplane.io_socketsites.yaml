@@ -1,0 +1,723 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: socketsites.site.cato.m.crossplane.io
+spec:
+  group: site.cato.m.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - cato
+    kind: SocketSite
+    listKind: SocketSiteList
+    plural: socketsites
+    singular: socketsite
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: 'SocketSite is the Schema for the SocketSites API. The cato_socket_site
+          resource contains the configuration parameters necessary to add a socket
+          site to the Cato cloud (virtual socket in AWS/Azure, or physical socket
+          https://support.catonetworks.com/hc/en-us/articles/4413280502929-Working-with-X1500-X1600-and-X1700-Socket-Sites).
+          Documentation for the underlying API used in this resource can be found
+          at mutation.addSocketSite() https://api.catonetworks.com/documentation/#mutation-site.addSocketSite.
+          Note: For AWS deployments, please accept the EULA for the Cato Networks
+          AWS Marketplace product https://aws.amazon.com/marketplace/pp?sku=dvfhly9fuuu67tw59c7lt5t3c.'
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SocketSiteSpec defines the desired state of SocketSite
+            properties:
+              forProvider:
+                properties:
+                  connectionType:
+                    description: |-
+                      (String) Connection type for the site (SOCKET_X1500, SOCKET_AWS1500, SOCKET_AZ1500, ...)
+                      Connection type for the site (SOCKET_X1500, SOCKET_AWS1500, SOCKET_AZ1500, ...)
+                    type: string
+                  description:
+                    description: |-
+                      (String) Site description
+                      Site description
+                    type: string
+                  name:
+                    description: |-
+                      (String) Site name
+                      Site name
+                    type: string
+                  nativeRange:
+                    description: (Attributes) Site lan native range settings (see
+                      below for nested schema)
+                    properties:
+                      dhcpSettings:
+                        description: (Attributes) Site native range DHCP settings
+                          (Only releveant for NATIVE and VLAN range_type) (see below
+                          for nested schema)
+                        properties:
+                          dhcpMicrosegmentation:
+                            description: |-
+                              (Boolean) DHCP Microsegmentation. When enabled, the DHCP server will allocate /32 subnet mask. Make sure to enable the proper Firewall rules and enable it with caution, as it is not supported on all operating systems; monitor the network closely after activation. This setting can only be configured when dhcp_type is set to DHCP_RANGE.
+                              DHCP Microsegmentation. When enabled, the DHCP server will allocate /32 subnet mask. Make sure to enable the proper Firewall rules and enable it with caution, as it is not supported on all operating systems; monitor the network closely after activation. This setting can only be configured when dhcp_type is set to DHCP_RANGE.
+                            type: boolean
+                          dhcpType:
+                            description: |-
+                              DhcpType)
+                              Network range dhcp type (https://api.catonetworks.com/documentation/#definition-DhcpType)
+                            type: string
+                          ipRange:
+                            description: |-
+                              192.168.1.20")
+                              Network range dhcp range (format "192.168.1.10-192.168.1.20")
+                            type: string
+                          relayGroupId:
+                            description: |-
+                              (String) Network range dhcp relay group id
+                              Network range dhcp relay group id
+                            type: string
+                          relayGroupName:
+                            description: |-
+                              (String) Network range dhcp relay group name
+                              Network range dhcp relay group name
+                            type: string
+                        type: object
+                      interfaceDestType:
+                        description: |-
+                          (String) Socket interface destination type for the native interface, example values: LAN, LAN_LAG_MASTER, LAN_LAG_MASTER_AND_VRRP, LAN_AND_HA, VRRP, VRRP_AND_LAN
+                          Socket interface destination type for the native interface, example values: LAN, LAN_LAG_MASTER, LAN_LAG_MASTER_AND_VRRP, LAN_AND_HA, VRRP, VRRP_AND_LAN
+                        type: string
+                      interfaceIndex:
+                        description: |-
+                          (String) LAN native range interface index, default is LAN1 for SOCKET_X1500 models, INT_5 for SOCKET_X1600 and SOCKET_X1600_LTE, and INT_3 for SOCKET_X1700 models
+                          LAN native range interface index, default is LAN1 for SOCKET_X1500 models, INT_5 for SOCKET_X1600 and SOCKET_X1600_LTE, and INT_3 for SOCKET_X1700 models
+                        type: string
+                      interfaceName:
+                        description: |-
+                          (String) LAN native range interface name (e.g., 'LAN 01')
+                          LAN native range interface name (e.g., 'LAN 01')
+                        type: string
+                      lagMinLinks:
+                        description: |-
+                          (Number) Number of interfaces to include in the link aggregation, only relevant for LAN_LAG_MASTER and LAN_LAG_MASTER_AND_VRRP interface destination types
+                          Number of interfaces to include in the link aggregation, only relevant for LAN_LAG_MASTER and LAN_LAG_MASTER_AND_VRRP interface destination types
+                        type: number
+                      localIp:
+                        description: |-
+                          (String) Site native range local ip
+                          Site native range local ip
+                        type: string
+                      mdnsReflector:
+                        description: |-
+                          (Boolean) Site native range mDNS reflector. When enabled, the Socket functions as an mDNS gateway, it relays mDNS requests and response between all enabled subnets.
+                          Site native range mDNS reflector. When enabled, the Socket functions as an mDNS gateway, it relays mDNS requests and response between all enabled subnets.
+                        type: boolean
+                      nativeNetworkLanInterfaceId:
+                        description: |-
+                          (String) ID of native range LAN interface (for additional network range update purposes)
+                          ID of native range LAN interface (for additional network range update purposes)
+                        type: string
+                      nativeNetworkRange:
+                        description: |-
+                          (String) Site native IP range (CIDR)
+                          Site native IP range (CIDR)
+                        type: string
+                      nativeNetworkRangeId:
+                        description: |-
+                          (String) Site native IP range ID (for update purpose)
+                          Site native IP range ID (for update purpose)
+                        type: string
+                      translatedSubnet:
+                        description: |-
+                          (String) Site translated native IP range (CIDR)
+                          Site translated native IP range (CIDR)
+                        type: string
+                      vlan:
+                        description: |-
+                          (Number) VLAN ID for the site native range
+                          VLAN ID for the site native range (optional)
+                        type: number
+                    type: object
+                  siteLocation:
+                    description: (Attributes) Site location (see below for nested
+                      schema)
+                    properties:
+                      address:
+                        description: |-
+                          (String) Optionnal address
+                          Optionnal address
+                        type: string
+                      city:
+                        description: |-
+                          (String) Optionnal city
+                          Optionnal city
+                        type: string
+                      countryCode:
+                        description: |-
+                          (String) Site country code (can be retrieve from entityLookup)
+                          Site country code (can be retrieve from entityLookup)
+                        type: string
+                      stateCode:
+                        description: |-
+                          (String) Optionnal site state code(can be retrieve from entityLookup)
+                          Optionnal site state code(can be retrieve from entityLookup)
+                        type: string
+                      timezone:
+                        description: |-
+                          (String) Site timezone (can be retrieve from entityLookup)
+                          Site timezone (can be retrieve from entityLookup)
+                        type: string
+                    type: object
+                  siteType:
+                    description: |-
+                      SiteType)
+                      Site type (https://api.catonetworks.com/documentation/#definition-SiteType)
+                    type: string
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  connectionType:
+                    description: |-
+                      (String) Connection type for the site (SOCKET_X1500, SOCKET_AWS1500, SOCKET_AZ1500, ...)
+                      Connection type for the site (SOCKET_X1500, SOCKET_AWS1500, SOCKET_AZ1500, ...)
+                    type: string
+                  description:
+                    description: |-
+                      (String) Site description
+                      Site description
+                    type: string
+                  name:
+                    description: |-
+                      (String) Site name
+                      Site name
+                    type: string
+                  nativeRange:
+                    description: (Attributes) Site lan native range settings (see
+                      below for nested schema)
+                    properties:
+                      dhcpSettings:
+                        description: (Attributes) Site native range DHCP settings
+                          (Only releveant for NATIVE and VLAN range_type) (see below
+                          for nested schema)
+                        properties:
+                          dhcpMicrosegmentation:
+                            description: |-
+                              (Boolean) DHCP Microsegmentation. When enabled, the DHCP server will allocate /32 subnet mask. Make sure to enable the proper Firewall rules and enable it with caution, as it is not supported on all operating systems; monitor the network closely after activation. This setting can only be configured when dhcp_type is set to DHCP_RANGE.
+                              DHCP Microsegmentation. When enabled, the DHCP server will allocate /32 subnet mask. Make sure to enable the proper Firewall rules and enable it with caution, as it is not supported on all operating systems; monitor the network closely after activation. This setting can only be configured when dhcp_type is set to DHCP_RANGE.
+                            type: boolean
+                          dhcpType:
+                            description: |-
+                              DhcpType)
+                              Network range dhcp type (https://api.catonetworks.com/documentation/#definition-DhcpType)
+                            type: string
+                          ipRange:
+                            description: |-
+                              192.168.1.20")
+                              Network range dhcp range (format "192.168.1.10-192.168.1.20")
+                            type: string
+                          relayGroupId:
+                            description: |-
+                              (String) Network range dhcp relay group id
+                              Network range dhcp relay group id
+                            type: string
+                          relayGroupName:
+                            description: |-
+                              (String) Network range dhcp relay group name
+                              Network range dhcp relay group name
+                            type: string
+                        type: object
+                      interfaceDestType:
+                        description: |-
+                          (String) Socket interface destination type for the native interface, example values: LAN, LAN_LAG_MASTER, LAN_LAG_MASTER_AND_VRRP, LAN_AND_HA, VRRP, VRRP_AND_LAN
+                          Socket interface destination type for the native interface, example values: LAN, LAN_LAG_MASTER, LAN_LAG_MASTER_AND_VRRP, LAN_AND_HA, VRRP, VRRP_AND_LAN
+                        type: string
+                      interfaceIndex:
+                        description: |-
+                          (String) LAN native range interface index, default is LAN1 for SOCKET_X1500 models, INT_5 for SOCKET_X1600 and SOCKET_X1600_LTE, and INT_3 for SOCKET_X1700 models
+                          LAN native range interface index, default is LAN1 for SOCKET_X1500 models, INT_5 for SOCKET_X1600 and SOCKET_X1600_LTE, and INT_3 for SOCKET_X1700 models
+                        type: string
+                      interfaceName:
+                        description: |-
+                          (String) LAN native range interface name (e.g., 'LAN 01')
+                          LAN native range interface name (e.g., 'LAN 01')
+                        type: string
+                      lagMinLinks:
+                        description: |-
+                          (Number) Number of interfaces to include in the link aggregation, only relevant for LAN_LAG_MASTER and LAN_LAG_MASTER_AND_VRRP interface destination types
+                          Number of interfaces to include in the link aggregation, only relevant for LAN_LAG_MASTER and LAN_LAG_MASTER_AND_VRRP interface destination types
+                        type: number
+                      localIp:
+                        description: |-
+                          (String) Site native range local ip
+                          Site native range local ip
+                        type: string
+                      mdnsReflector:
+                        description: |-
+                          (Boolean) Site native range mDNS reflector. When enabled, the Socket functions as an mDNS gateway, it relays mDNS requests and response between all enabled subnets.
+                          Site native range mDNS reflector. When enabled, the Socket functions as an mDNS gateway, it relays mDNS requests and response between all enabled subnets.
+                        type: boolean
+                      nativeNetworkLanInterfaceId:
+                        description: |-
+                          (String) ID of native range LAN interface (for additional network range update purposes)
+                          ID of native range LAN interface (for additional network range update purposes)
+                        type: string
+                      nativeNetworkRange:
+                        description: |-
+                          (String) Site native IP range (CIDR)
+                          Site native IP range (CIDR)
+                        type: string
+                      nativeNetworkRangeId:
+                        description: |-
+                          (String) Site native IP range ID (for update purpose)
+                          Site native IP range ID (for update purpose)
+                        type: string
+                      translatedSubnet:
+                        description: |-
+                          (String) Site translated native IP range (CIDR)
+                          Site translated native IP range (CIDR)
+                        type: string
+                      vlan:
+                        description: |-
+                          (Number) VLAN ID for the site native range
+                          VLAN ID for the site native range (optional)
+                        type: number
+                    type: object
+                  siteLocation:
+                    description: (Attributes) Site location (see below for nested
+                      schema)
+                    properties:
+                      address:
+                        description: |-
+                          (String) Optionnal address
+                          Optionnal address
+                        type: string
+                      city:
+                        description: |-
+                          (String) Optionnal city
+                          Optionnal city
+                        type: string
+                      countryCode:
+                        description: |-
+                          (String) Site country code (can be retrieve from entityLookup)
+                          Site country code (can be retrieve from entityLookup)
+                        type: string
+                      stateCode:
+                        description: |-
+                          (String) Optionnal site state code(can be retrieve from entityLookup)
+                          Optionnal site state code(can be retrieve from entityLookup)
+                        type: string
+                      timezone:
+                        description: |-
+                          (String) Site timezone (can be retrieve from entityLookup)
+                          Site timezone (can be retrieve from entityLookup)
+                        type: string
+                    type: object
+                  siteType:
+                    description: |-
+                      SiteType)
+                      Site type (https://api.catonetworks.com/documentation/#definition-SiteType)
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.connectionType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.connectionType)
+                || (has(self.initProvider) && has(self.initProvider.connectionType))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.nativeRange is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.nativeRange)
+                || (has(self.initProvider) && has(self.initProvider.nativeRange))'
+            - message: spec.forProvider.siteLocation is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.siteLocation)
+                || (has(self.initProvider) && has(self.initProvider.siteLocation))'
+            - message: spec.forProvider.siteType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.siteType)
+                || (has(self.initProvider) && has(self.initProvider.siteType))'
+          status:
+            description: SocketSiteStatus defines the observed state of SocketSite.
+            properties:
+              atProvider:
+                properties:
+                  connectionType:
+                    description: |-
+                      (String) Connection type for the site (SOCKET_X1500, SOCKET_AWS1500, SOCKET_AZ1500, ...)
+                      Connection type for the site (SOCKET_X1500, SOCKET_AWS1500, SOCKET_AZ1500, ...)
+                    type: string
+                  description:
+                    description: |-
+                      (String) Site description
+                      Site description
+                    type: string
+                  id:
+                    description: (String) Site ID
+                    type: string
+                  name:
+                    description: |-
+                      (String) Site name
+                      Site name
+                    type: string
+                  nativeRange:
+                    description: (Attributes) Site lan native range settings (see
+                      below for nested schema)
+                    properties:
+                      dhcpSettings:
+                        description: (Attributes) Site native range DHCP settings
+                          (Only releveant for NATIVE and VLAN range_type) (see below
+                          for nested schema)
+                        properties:
+                          dhcpMicrosegmentation:
+                            description: |-
+                              (Boolean) DHCP Microsegmentation. When enabled, the DHCP server will allocate /32 subnet mask. Make sure to enable the proper Firewall rules and enable it with caution, as it is not supported on all operating systems; monitor the network closely after activation. This setting can only be configured when dhcp_type is set to DHCP_RANGE.
+                              DHCP Microsegmentation. When enabled, the DHCP server will allocate /32 subnet mask. Make sure to enable the proper Firewall rules and enable it with caution, as it is not supported on all operating systems; monitor the network closely after activation. This setting can only be configured when dhcp_type is set to DHCP_RANGE.
+                            type: boolean
+                          dhcpType:
+                            description: |-
+                              DhcpType)
+                              Network range dhcp type (https://api.catonetworks.com/documentation/#definition-DhcpType)
+                            type: string
+                          ipRange:
+                            description: |-
+                              192.168.1.20")
+                              Network range dhcp range (format "192.168.1.10-192.168.1.20")
+                            type: string
+                          relayGroupId:
+                            description: |-
+                              (String) Network range dhcp relay group id
+                              Network range dhcp relay group id
+                            type: string
+                          relayGroupName:
+                            description: |-
+                              (String) Network range dhcp relay group name
+                              Network range dhcp relay group name
+                            type: string
+                        type: object
+                      gateway:
+                        description: |-
+                          (String) Gateway IP address for the native range
+                          Gateway IP address for the native range
+                        type: string
+                      interfaceDestType:
+                        description: |-
+                          (String) Socket interface destination type for the native interface, example values: LAN, LAN_LAG_MASTER, LAN_LAG_MASTER_AND_VRRP, LAN_AND_HA, VRRP, VRRP_AND_LAN
+                          Socket interface destination type for the native interface, example values: LAN, LAN_LAG_MASTER, LAN_LAG_MASTER_AND_VRRP, LAN_AND_HA, VRRP, VRRP_AND_LAN
+                        type: string
+                      interfaceId:
+                        description: |-
+                          (String) LAN native range interface id
+                          LAN native range interface id
+                        type: string
+                      interfaceIndex:
+                        description: |-
+                          (String) LAN native range interface index, default is LAN1 for SOCKET_X1500 models, INT_5 for SOCKET_X1600 and SOCKET_X1600_LTE, and INT_3 for SOCKET_X1700 models
+                          LAN native range interface index, default is LAN1 for SOCKET_X1500 models, INT_5 for SOCKET_X1600 and SOCKET_X1600_LTE, and INT_3 for SOCKET_X1700 models
+                        type: string
+                      interfaceName:
+                        description: |-
+                          (String) LAN native range interface name (e.g., 'LAN 01')
+                          LAN native range interface name (e.g., 'LAN 01')
+                        type: string
+                      lagMinLinks:
+                        description: |-
+                          (Number) Number of interfaces to include in the link aggregation, only relevant for LAN_LAG_MASTER and LAN_LAG_MASTER_AND_VRRP interface destination types
+                          Number of interfaces to include in the link aggregation, only relevant for LAN_LAG_MASTER and LAN_LAG_MASTER_AND_VRRP interface destination types
+                        type: number
+                      localIp:
+                        description: |-
+                          (String) Site native range local ip
+                          Site native range local ip
+                        type: string
+                      mdnsReflector:
+                        description: |-
+                          (Boolean) Site native range mDNS reflector. When enabled, the Socket functions as an mDNS gateway, it relays mDNS requests and response between all enabled subnets.
+                          Site native range mDNS reflector. When enabled, the Socket functions as an mDNS gateway, it relays mDNS requests and response between all enabled subnets.
+                        type: boolean
+                      nativeNetworkLanInterfaceId:
+                        description: |-
+                          (String) ID of native range LAN interface (for additional network range update purposes)
+                          ID of native range LAN interface (for additional network range update purposes)
+                        type: string
+                      nativeNetworkRange:
+                        description: |-
+                          (String) Site native IP range (CIDR)
+                          Site native IP range (CIDR)
+                        type: string
+                      nativeNetworkRangeId:
+                        description: |-
+                          (String) Site native IP range ID (for update purpose)
+                          Site native IP range ID (for update purpose)
+                        type: string
+                      primaryManagementIp:
+                        description: |-
+                          (String) Site native range primary management IP
+                          Site native range primary management IP
+                        type: string
+                      rangeId:
+                        description: |-
+                          (String) Native range ID (base64 encoded identifier)
+                          Native range ID (base64 encoded identifier)
+                        type: string
+                      rangeName:
+                        description: |-
+                          (String) Native range name (typically 'Native Range')
+                          Native range name (typically 'Native Range')
+                        type: string
+                      rangeType:
+                        description: |-
+                          (String) NATIVE
+                          NATIVE
+                        type: string
+                      secondaryManagementIp:
+                        description: |-
+                          (String) Site native range secondary management IP
+                          Site native range secondary management IP
+                        type: string
+                      translatedSubnet:
+                        description: |-
+                          (String) Site translated native IP range (CIDR)
+                          Site translated native IP range (CIDR)
+                        type: string
+                      vlan:
+                        description: |-
+                          (Number) VLAN ID for the site native range
+                          VLAN ID for the site native range (optional)
+                        type: number
+                    type: object
+                  siteLocation:
+                    description: (Attributes) Site location (see below for nested
+                      schema)
+                    properties:
+                      address:
+                        description: |-
+                          (String) Optionnal address
+                          Optionnal address
+                        type: string
+                      city:
+                        description: |-
+                          (String) Optionnal city
+                          Optionnal city
+                        type: string
+                      countryCode:
+                        description: |-
+                          (String) Site country code (can be retrieve from entityLookup)
+                          Site country code (can be retrieve from entityLookup)
+                        type: string
+                      stateCode:
+                        description: |-
+                          (String) Optionnal site state code(can be retrieve from entityLookup)
+                          Optionnal site state code(can be retrieve from entityLookup)
+                        type: string
+                      timezone:
+                        description: |-
+                          (String) Site timezone (can be retrieve from entityLookup)
+                          Site timezone (can be retrieve from entityLookup)
+                        type: string
+                    type: object
+                  siteType:
+                    description: |-
+                      SiteType)
+                      Site type (https://api.catonetworks.com/documentation/#definition-SiteType)
+                    type: string
+                  sockets:
+                    description: (Attributes Set) Socket information (see below for
+                      nested schema)
+                    items:
+                      properties:
+                        id:
+                          description: |-
+                            (String) Site ID
+                            Socket ID
+                          type: string
+                        isPrimary:
+                          description: |-
+                            (Boolean) Indicates if the socket is primary
+                            Indicates if the socket is primary
+                          type: boolean
+                        platform:
+                          description: |-
+                            (String) Socket platform
+                            Socket platform
+                          type: string
+                        serialNumber:
+                          description: |-
+                            (String) Socket serial number
+                            Socket serial number
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

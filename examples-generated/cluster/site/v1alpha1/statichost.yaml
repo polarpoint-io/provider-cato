@@ -1,0 +1,13 @@
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: StaticHost
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/statichost
+  labels:
+    testing.upbound.io/example-name: host1
+  name: host1
+spec:
+  forProvider:
+    ip: 192.168.0.1
+    name: host
+    siteId: ${cato_socket_site.site1.id}

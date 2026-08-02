@@ -1,0 +1,46 @@
+apiVersion: site.cato.m.crossplane.io/v1alpha1
+kind: IpsecSite
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/ipsecsite
+  labels:
+    testing.upbound.io/example-name: test-dev-site
+  name: test-dev-site
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: IPSec Dev site
+    ipsec:
+      primary:
+        publicCatoIpId: "30111"
+        tunnels:
+        - lastMileBw:
+            downstream: 10
+            upstream: 10
+          privateCatoIp: 172.98.10.51
+          privateSiteIp: 172.98.10.61
+          pskSecretRef:
+            key: example-key
+            name: example-secret
+          publicSiteIp: 1.1.1.1
+      secondary:
+        publicCatoIpId: "30112"
+        tunnels:
+        - lastMileBw:
+            downstream: 10
+            upstream: 10
+          privateCatoIp: 172.98.10.91
+          privateSiteIp: 172.98.10.11
+          pskSecretRef:
+            key: example-key
+            name: example-secret
+          publicSiteIp: 1.1.1.2
+    name: ipsec-dev-site
+    nativeNetworkRange: 172.98.10.0/24
+    siteLocation:
+      address: 555 That Way
+      city: ${data.cato_siteLocation.ny.locations[0].city}
+      countryCode: ${data.cato_siteLocation.ny.locations[0].country_code}
+      stateCode: ${data.cato_siteLocation.ny.locations[0].state_code}
+      timezone: ${data.cato_siteLocation.ny.locations[0].timezone[0]}
+    siteType: CLOUD_DC

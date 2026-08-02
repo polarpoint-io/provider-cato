@@ -1,0 +1,26 @@
+apiVersion: admin.cato.m.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: admin/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: group_by_name
+  name: group-by-name
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: Example group created via Terraform
+    members:
+    - id: "12345"
+      type: FLOATING_SUBNET
+    - name: My Global IP Range
+      type: GLOBAL_IP_RANGE
+    - id: "12345"
+      type: HOST
+    - id: "12345"
+      type: NETWORK_INTERFACE
+    - name: X1600 Site
+      type: SITE
+    - id: AbCdE12345=
+      type: SITE_NETWORK_SUBNET
+    name: Cato Group

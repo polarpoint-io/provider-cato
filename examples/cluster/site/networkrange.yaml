@@ -1,0 +1,13 @@
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: NetworkRange
+metadata:
+  name: branch-office-vlan-100
+spec:
+  forProvider:
+    siteId: "123456"
+    name: branch-office-vlan-100
+    rangeType: VLAN
+    subnet: 10.20.100.0/24
+    vlan: 100
+  providerConfigRef:
+    name: default

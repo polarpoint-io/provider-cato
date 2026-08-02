@@ -1,0 +1,27 @@
+apiVersion: access.cato.crossplane.io/v1alpha1
+kind: AppConnector
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/appconnector
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: example-app-connector description
+    groupName: example-group
+    location:
+      address: 123 Main St
+      cityName: San Francisco
+      countryCode: US
+      stateCode: US-CA
+      timezone: America/Los_Angeles
+    name: example-app-connector
+    preferredPopLocation:
+      automatic: false
+      preferredOnly: true
+      primary:
+        name: New York
+      secondary:
+        name: Chicago
+    type: VIRTUAL

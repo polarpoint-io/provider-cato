@@ -1,0 +1,34 @@
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: LanInterfaceLagMember
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/laninterfacelagmember
+  labels:
+    testing.upbound.io/example-name: lag2
+  name: lag2
+spec:
+  forProvider:
+    destType: LAN_LAG_MEMBER
+    interfaceId: INT_6
+    name: LagMember6
+    siteId: ${var.site_id}
+
+---
+
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: LanInterface
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/laninterfacelagmember
+  labels:
+    testing.upbound.io/example-name: lag1
+  name: lag1
+spec:
+  forProvider:
+    destType: LAN_LAG_MASTER
+    interfaceId: INT_5
+    lagMinLinks: 2
+    localIp: 10.12.200.6
+    name: MyLag5
+    siteId: ${var.site_id}
+    subnet: 10.12.200.0/25

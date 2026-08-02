@@ -1,0 +1,18 @@
+apiVersion: site.cato.m.crossplane.io/v1alpha1
+kind: WanInterface
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/waninterface
+  labels:
+    testing.upbound.io/example-name: wan1
+  name: wan1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    downstreamBandwidth: "100"
+    interfaceId: WAN1
+    name: Interface WAN 1
+    precedence: ACTIVE
+    role: wan_1
+    siteId: ${cato_socket_site.site1.id}
+    upstreamBandwidth: "100"

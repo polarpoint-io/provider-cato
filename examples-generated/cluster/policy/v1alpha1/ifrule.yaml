@@ -1,0 +1,118 @@
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: IfRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/ifrule
+  labels:
+    testing.upbound.io/example-name: allow_all_and_log
+  name: allow-all-and-log
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    rule:
+      action: ALLOW
+      enabled: true
+      name: Allow all & logs
+      tracking:
+        event:
+          enabled: true
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: IfSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/ifrule
+  labels:
+    testing.upbound.io/example-name: if_section
+  name: if-section
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: IFW Section
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: TlsRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/ifrule
+  labels:
+    testing.upbound.io/example-name: kitchen_sink
+  name: kitchen-sink
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    rule:
+      action: INSPECT
+      application:
+        appCategory:
+        - name: Advertisements
+        application:
+        - name: buildmyteam
+        country:
+        - name: Afghanistan
+        customApp:
+        - name: Test Custom App
+        customCategory:
+        - name: Test Custom Category
+        domain:
+        - something.com
+        - www.something.com
+        fqdn:
+        - www.something.com
+        globalIpRange:
+        - name: global_ip_range
+        ip:
+        - 1.2.3.4
+        ipRange:
+        - from: 1.2.3.4
+          to: 1.2.3.5
+        remoteAsn:
+        - "1234"
+        service:
+        - name: 3PC
+        subnet:
+        - 1.2.3.0/24
+      connectionOrigin: REMOTE
+      description: test
+      devicePostureProfile:
+      - id: "4202"
+        name: Test Device Posture Profile
+      enabled: true
+      name: Kitchen Sink New
+      platform: EMBEDDED
+      source:
+        globalIpRange:
+        - name: global_ip_range
+        - name: global_ip_range2
+        group:
+        - name: test group
+        host:
+        - name: host31
+        ip:
+        - 1.2.3.4
+        ipRange:
+        - from: 1.2.3.4
+          to: 1.2.3.5
+        networkInterface:
+        - id: "124986"
+        site:
+        - {}
+        siteNetworkSubnet:
+        - id: UzU4OTI1Mw==
+        subnet:
+        - 1.2.3.0/24
+        systemGroup:
+        - name: All Floating Ranges
+        user:
+        - name: test user
+        usersGroup:
+        - name: Test User Group
+      untrustedCertificateAction: ALLOW

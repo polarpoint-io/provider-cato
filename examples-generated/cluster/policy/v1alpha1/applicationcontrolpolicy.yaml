@@ -1,0 +1,12 @@
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: ApplicationControlPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/applicationcontrolpolicy
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    dataControlEnabled: ENABLED
+    enabled: true

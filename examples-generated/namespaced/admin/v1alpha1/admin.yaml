@@ -1,0 +1,17 @@
+apiVersion: admin.cato.m.crossplane.io/v1alpha1
+kind: Admin
+metadata:
+  annotations:
+    meta.upbound.io/example-id: admin/v1alpha1/admin
+  labels:
+    testing.upbound.io/example-name: basic_admin
+  name: basic-admin
+  namespace: crossplane-system
+spec:
+  forProvider:
+    email: admin@email.com
+    firstName: John
+    lastName: Doe
+    managedRoles:
+    - id: "1"
+    passwordNeverExpires: true

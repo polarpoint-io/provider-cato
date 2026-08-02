@@ -1,0 +1,38 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: WfSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/wfsection
+  labels:
+    testing.upbound.io/example-name: wf_section_1
+  name: wf-section-1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: tf section
+
+---
+
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: WfRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/wfsection
+  labels:
+    testing.upbound.io/example-name: wf_rule_1
+  name: wf-rule-1
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: FIRST_IN_SECTION
+      ref: ${cato_wf_section.wf_section_1.section.id}
+    rule:
+      action: ALLOW
+      description: terraform test rules
+      direction: BOTH
+      enabled: false
+      name: test

@@ -1,0 +1,48 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: ApplicationControlRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/applicationcontrolrule
+  labels:
+    testing.upbound.io/example-name: application
+  name: application
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_SECTION
+      ref: ${cato_application_control_section.example.section.id}
+    rule:
+      applicationRule:
+        accessMethod:
+        - accessMethod: USER_AGENT
+          operator: CONTAINS
+          value: Mozilla
+        action: BLOCK
+        application:
+          application:
+          - id: slack
+        schedule:
+          activeOn: CUSTOM_TIMEFRAME
+          customTimeframe:
+            from: "2026-01-01T00:00:00Z"
+            to: "2026-12-31T23:59:59Z"
+        severity: MEDIUM
+        source:
+          ip:
+          - 198.51.100.10
+          ipRange:
+          - from: 10.0.0.1
+            to: 10.0.0.20
+          subnet:
+          - 203.0.113.0/24
+        tracking:
+          alert:
+            enabled: false
+            frequency: HOURLY
+          event:
+            enabled: true
+      description: Managed by Terraform
+      enabled: true
+      name: TF — Block Slack uploads
+      ruleType: APPLICATION

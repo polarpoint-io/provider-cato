@@ -1,0 +1,42 @@
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: SocketLanNetworkRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/socketlannetworkrule
+  labels:
+    testing.upbound.io/example-name: minimal_nat
+  name: minimal-nat
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    rule:
+      destination: {}
+      direction: TO
+      enabled: true
+      name: LAN to WAN with NAT
+      nat:
+        enabled: true
+        natType: DYNAMIC_PAT
+      site:
+        site:
+        - name: My Site
+      source: {}
+      transport: LAN
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: SocketLanSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/socketlannetworkrule
+  labels:
+    testing.upbound.io/example-name: network_section
+  name: network-section
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: Network Rules Section

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="provider-cato">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#080C1C"/>
+      <stop offset="100%" stop-color="#101A3A"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="52" fill="url(#bg)"/>
+  <g stroke="#38C8E8" stroke-opacity="0.45" stroke-width="3">
+    <path d="M128 128 62 78M128 128 194 78M128 128 48 138M128 128 208 138M128 128 88 190M128 128 168 190"/>
+  </g>
+  <g stroke="#8B7CF6" stroke-opacity="0.3" stroke-width="3">
+    <path d="M62 78 48 138M194 78 208 138M48 138 168 190M208 138 88 190"/>
+  </g>
+  <g stroke-width="3">
+    <rect x="46" y="64" width="32" height="28" rx="7" fill="#38C8E8" fill-opacity="0.18" stroke="#38C8E8"/>
+    <rect x="178" y="64" width="32" height="28" rx="7" fill="#8B7CF6" fill-opacity="0.18" stroke="#8B7CF6"/>
+    <rect x="32" y="124" width="32" height="28" rx="7" fill="#38C8E8" fill-opacity="0.18" stroke="#38C8E8"/>
+    <rect x="192" y="124" width="32" height="28" rx="7" fill="#8B7CF6" fill-opacity="0.18" stroke="#8B7CF6"/>
+    <rect x="72" y="176" width="32" height="28" rx="7" fill="#38C8E8" fill-opacity="0.18" stroke="#38C8E8"/>
+    <rect x="152" y="176" width="32" height="28" rx="7" fill="#8B7CF6" fill-opacity="0.18" stroke="#8B7CF6"/>
+  </g>
+  <circle cx="128" cy="128" r="42" fill="#0B142C" stroke="#3CC896" stroke-width="4"/>
+  <circle cx="128" cy="128" r="25" fill="none" stroke="#3CC896" stroke-opacity="0.5" stroke-width="3"/>
+  <circle cx="128" cy="128" r="9" fill="#3CC896"/>
+</svg>

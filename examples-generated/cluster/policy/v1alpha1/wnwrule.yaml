@@ -1,0 +1,56 @@
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: WnwRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/wnwrule
+  labels:
+    testing.upbound.io/example-name: min
+  name: min
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_SECTION
+      ref: ${cato_wnw_section.wnw_section.section.id}
+    rule:
+      application: {}
+      bandwidthPriority:
+        name: "255"
+      configuration:
+        activeTcpAcceleration: false
+        packetLossMitigation: true
+        preserveSourcePort: false
+        primaryTransport:
+          primaryInterfaceRole: WAN1
+          secondaryInterfaceRole: WAN1
+          transportType: ALTERNATIVE_WAN
+        secondaryTransport:
+          primaryInterfaceRole: AUTOMATIC
+          secondaryInterfaceRole: NONE
+          transportType: NONE
+      description: example description
+      destination: {}
+      enabled: true
+      name: Example WAN Minimal Rule
+      routeType: NONE
+      ruleType: WAN
+      source: {}
+      tracking:
+        event:
+          enabled: false
+
+---
+
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: WnwSection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/wnwrule
+  labels:
+    testing.upbound.io/example-name: wnw_section
+  name: wnw-section
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    section:
+      name: Custom WAN Network Rules

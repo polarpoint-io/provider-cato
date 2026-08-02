@@ -1,0 +1,11 @@
+apiVersion: access.cato.crossplane.io/v1alpha1
+kind: PrivateAccessPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/privateaccesspolicy
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    enabled: true

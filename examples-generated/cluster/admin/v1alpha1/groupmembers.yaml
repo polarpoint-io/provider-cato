@@ -1,0 +1,24 @@
+apiVersion: admin.cato.crossplane.io/v1alpha1
+kind: GroupMembers
+metadata:
+  annotations:
+    meta.upbound.io/example-id: admin/v1alpha1/groupmembers
+  labels:
+    testing.upbound.io/example-name: members
+  name: members
+spec:
+  forProvider:
+    groupName: kitchen sink group
+    members:
+    - id: "12345"
+      type: FLOATING_SUBNET
+    - id: "12345"
+      type: GLOBAL_IP_RANGE
+    - id: "12345"
+      type: HOST
+    - id: "12345"
+      type: NETWORK_INTERFACE
+    - id: "12345"
+      type: SITE
+    - id: AbCdE12345=
+      type: SITE_NETWORK_SUBNET

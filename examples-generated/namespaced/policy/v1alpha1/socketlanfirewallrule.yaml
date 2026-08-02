@@ -1,0 +1,53 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: SocketLanFirewallRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/socketlanfirewallrule
+  labels:
+    testing.upbound.io/example-name: allow_all
+  name: allow-all
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: FIRST_IN_RULE
+      ref: ${cato_socket_lan_network_rule.parent_rule.rule.id}
+    rule:
+      action: ALLOW
+      destination: {}
+      direction: TO
+      enabled: true
+      name: Allow All Traffic
+      source: {}
+      tracking:
+        alert:
+          enabled: false
+          frequency: DAILY
+        event:
+          enabled: true
+
+---
+
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: SocketLanNetworkRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/socketlanfirewallrule
+  labels:
+    testing.upbound.io/example-name: parent_rule
+  name: parent-rule
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    rule:
+      destination: {}
+      direction: TO
+      enabled: true
+      name: Parent Network Rule
+      site:
+        site:
+        - name: My Site
+      source: {}
+      transport: LAN

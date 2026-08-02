@@ -1,0 +1,15 @@
+apiVersion: site.cato.m.crossplane.io/v1alpha1
+kind: NetworkRange
+metadata:
+  name: branch-office-vlan-100
+  namespace: crossplane-system
+spec:
+  forProvider:
+    siteId: "123456"
+    name: branch-office-vlan-100
+    rangeType: VLAN
+    subnet: 10.20.100.0/24
+    vlan: 100
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default

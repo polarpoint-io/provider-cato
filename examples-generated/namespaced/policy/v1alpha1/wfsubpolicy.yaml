@@ -1,0 +1,50 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: WfSubPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/wfsubpolicy
+  labels:
+    testing.upbound.io/example-name: minimal
+  name: minimal
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    description: Rules that only apply to branch sites
+    name: Branch Sites Sub-Policy
+    scope:
+      destination: {}
+      enabled: true
+      source: {}
+      tracking:
+        event:
+          enabled: true
+
+---
+
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: WfRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/wfsubpolicy
+  labels:
+    testing.upbound.io/example-name: in_sub_policy
+  name: in-sub-policy
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    rule:
+      action: ALLOW
+      destination:
+        ip:
+        - 10.1.0.0/16
+      enabled: true
+      name: Allow datacenter to internal
+      source: {}
+      tracking:
+        event:
+          enabled: true
+    subPolicyId: ${cato_wf_sub_policy.full.id}

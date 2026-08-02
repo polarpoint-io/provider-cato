@@ -1,0 +1,32 @@
+apiVersion: site.cato.crossplane.io/v1alpha1
+kind: BgpPeer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/bgppeer
+  labels:
+    testing.upbound.io/example-name: bgp_peer
+  name: bgp-peer
+spec:
+  forProvider:
+    advertiseDefaultRoute: false
+    advertiseSummaryRoutes: true
+    bfdSettings:
+      multiplier: 10
+      receiveInterval: 100
+      transmitInterval: 100
+    catoAsn: 65000
+    defaultAction: ACCEPT
+    metric: 150
+    name: vWAN BGP connectionn
+    peerAsn: 65100
+    peerIp: 10.0.0.1
+    siteId: "12345"
+    summaryRoute:
+    - community:
+      - from: 65005
+        to: 65010
+      route: 1.1.1.0/24
+    - community:
+      - from: 65015
+        to: 65020
+      route: 1.1.2.0/24

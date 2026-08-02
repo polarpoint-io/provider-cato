@@ -1,0 +1,34 @@
+apiVersion: access.cato.crossplane.io/v1alpha1
+kind: PrivateApp
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/privateapp
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowIcmpProtocol: true
+    description: private-app-example description
+    internalAppAddress: 172.198.30.10
+    name: private-app-example
+    privateAppProbing:
+      faultThresholdDown: 10
+      interval: 5
+      type: ICMP_PING
+    probingEnabled: true
+    protocolPorts:
+    - ports:
+      - 80
+      protocol: TCP
+    - ports:
+      - 443
+      protocol: TCP
+    - portRange:
+        from: 6000
+        to: 6010
+      protocol: TCP
+    published: true
+    publishedAppDomain:
+      connectorGroupName: conn-group-1
+      publishedAppDomain: private-app-example.example.com

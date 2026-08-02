@@ -1,0 +1,35 @@
+apiVersion: policy.cato.crossplane.io/v1alpha1
+kind: AppTenantRestrictionRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/apptenantrestrictionrule
+  labels:
+    testing.upbound.io/example-name: bypass
+  name: bypass
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_SECTION
+      ref: ${cato_app_tenant_restriction_section.example.section.id}
+    rule:
+      action: BYPASS
+      application:
+        id: microsoft_office_login
+      description: Bypass tenant restriction for corporate users on weekdays
+      enabled: true
+      name: TF ATR — Allow corporate Office 365 access
+      schedule:
+        activeOn: CUSTOM_RECURRING
+        customRecurring:
+          days:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          from: "08:00"
+          to: "18:00"
+      severity: MEDIUM
+      source:
+        ip:
+        - 198.51.100.40

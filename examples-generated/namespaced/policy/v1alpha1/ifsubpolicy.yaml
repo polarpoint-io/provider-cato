@@ -1,0 +1,51 @@
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: IfSubPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/ifsubpolicy
+  labels:
+    testing.upbound.io/example-name: minimal
+  name: minimal
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    description: Rules that only apply to remote users
+    name: Remote Users Sub-Policy
+    scope:
+      connectionOrigin: REMOTE
+      destination: {}
+      enabled: true
+      source: {}
+      tracking:
+        event:
+          enabled: true
+
+---
+
+apiVersion: policy.cato.m.crossplane.io/v1alpha1
+kind: IfRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: policy/v1alpha1/ifsubpolicy
+  labels:
+    testing.upbound.io/example-name: in_sub_policy
+  name: in-sub-policy
+  namespace: crossplane-system
+spec:
+  forProvider:
+    at:
+      position: LAST_IN_POLICY
+    rule:
+      action: BLOCK
+      destination:
+        domain:
+        - test.com
+      enabled: true
+      name: Block test.com for Marketing
+      source: {}
+      tracking:
+        event:
+          enabled: true
+    subPolicyId: ${cato_if_sub_policy.full.id}

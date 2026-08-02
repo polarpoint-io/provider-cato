@@ -1,0 +1,24 @@
+apiVersion: site.cato.m.crossplane.io/v1alpha1
+kind: SocketSite
+metadata:
+  annotations:
+    meta.upbound.io/example-id: site/v1alpha1/socketsite
+  labels:
+    testing.upbound.io/example-name: aws_site
+  name: aws-site
+  namespace: crossplane-system
+spec:
+  forProvider:
+    connectionType: SOCKET_AWS1500
+    description: site description
+    name: aws_site
+    nativeRange:
+      localIp: 192.168.25.5
+      nativeNetworkRange: 192.168.25.0/24
+    siteLocation:
+      address: 555 That Way
+      city: ${data.cato_siteLocation.ny.locations[0].city}
+      countryCode: ${data.cato_siteLocation.ny.locations[0].country_code}
+      stateCode: ${data.cato_siteLocation.ny.locations[0].state_code}
+      timezone: ${data.cato_siteLocation.ny.locations[0].timezone[0]}
+    siteType: DATACENTER

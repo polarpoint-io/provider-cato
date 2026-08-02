@@ -1,0 +1,1154 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: ipsecsites.site.cato.crossplane.io
+spec:
+  group: site.cato.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - cato
+    kind: IpsecSite
+    listKind: IpsecSiteList
+    plural: ipsecsites
+    singular: ipsecsite
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: IpsecSite is the Schema for the IpsecSites API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IpsecSiteSpec defines the desired state of IpsecSite
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  description:
+                    description: |-
+                      (String) description
+                      description
+                    type: string
+                  ipsec:
+                    description: (Attributes) IPSec Configuration (see below for nested
+                      schema)
+                    properties:
+                      authMessage:
+                        description: (Attributes) IKE authentication message configuration
+                          (see below for nested schema)
+                        properties:
+                          cipher:
+                            description: |-
+                              (String) Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                              Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                            type: string
+                          dhGroup:
+                            description: |-
+                              Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                              Diffie-Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                            type: string
+                          integrity:
+                            description: |-
+                              (String) Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                          prf:
+                            description: |-
+                              Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Pseudo-Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                        type: object
+                      connectionMode:
+                        description: |-
+                          (String) Connection mode for IPSec tunnel. Valid values: RESPONDER_ONLY, BIDIRECTIONAL
+                          Connection mode for IPSec tunnel. Valid values: RESPONDER_ONLY, BIDIRECTIONAL
+                        type: string
+                      identificationType:
+                        description: |-
+                          (String) Identification type for IPSec. Only applicable when connection_mode is RESPONDER_ONLY. Valid values: IPV4, FQDN, EMAIL, KEY_ID
+                          Identification type for IPSec. Only applicable when connection_mode is RESPONDER_ONLY. Valid values: IPV4, FQDN, EMAIL, KEY_ID
+                        type: string
+                      initMessage:
+                        description: (Attributes) IKE initialization message configuration
+                          (see below for nested schema)
+                        properties:
+                          cipher:
+                            description: |-
+                              (String) Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                              Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                            type: string
+                          dhGroup:
+                            description: |-
+                              Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                              Diffie-Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                            type: string
+                          integrity:
+                            description: |-
+                              (String) Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                          prf:
+                            description: |-
+                              Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Pseudo-Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                        type: object
+                      networkRanges:
+                        description: |-
+                          (List of String) List of network ranges (e.g., ['servers:192.168.11.0/24', 'desktops:192.169.11.0/24'])
+                          List of network ranges (e.g., ['servers:192.168.11.0/24', 'desktops:192.169.11.0/24'])
+                        items:
+                          type: string
+                        type: array
+                      primary:
+                        description: (Attributes) primary (see below for nested schema)
+                        properties:
+                          destinationType:
+                            description: |-
+                              (String) destinationtype
+                              destinationtype
+                            type: string
+                          popLocationId:
+                            description: |-
+                              (String) poplocationid
+                              poplocationid
+                            type: string
+                          publicCatoIpId:
+                            description: |-
+                              (String) publiccatoipid
+                              publiccatoipid
+                            type: string
+                          tunnels:
+                            description: (Attributes List) tunnels (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                lastMileBw:
+                                  description: (Attributes) lastmilebw (see below
+                                    for nested schema)
+                                  properties:
+                                    downstream:
+                                      description: |-
+                                        (Number) Downstream
+                                        Downstream
+                                      type: number
+                                    downstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) downstreamMbpsPrecision
+                                        downstreamMbpsPrecision
+                                      type: number
+                                    upstream:
+                                      description: |-
+                                        (Number) upstream
+                                        upstream
+                                      type: number
+                                    upstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) upstreamMbpsPrecision
+                                        upstreamMbpsPrecision
+                                      type: number
+                                  type: object
+                                privateCatoIp:
+                                  description: |-
+                                    (String) privatecatoip
+                                    privatecatoip
+                                  type: string
+                                privateSiteIp:
+                                  description: |-
+                                    (String) privatesiteip
+                                    privatesiteip
+                                  type: string
+                                pskSecretRef:
+                                  description: |-
+                                    (String, Sensitive) psk
+                                    psk
+                                  properties:
+                                    key:
+                                      description: The key to select.
+                                      type: string
+                                    name:
+                                      description: Name of the secret.
+                                      type: string
+                                    namespace:
+                                      description: Namespace of the secret.
+                                      type: string
+                                  required:
+                                  - key
+                                  - name
+                                  - namespace
+                                  type: object
+                                publicSiteIp:
+                                  description: |-
+                                    (String) publicsiteip
+                                    publicsiteip
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      secondary:
+                        description: (Attributes) secondary (see below for nested
+                          schema)
+                        properties:
+                          destinationType:
+                            description: |-
+                              (String) destinationtype
+                              destinationtype
+                            type: string
+                          popLocationId:
+                            description: |-
+                              (String) poplocationid
+                              poplocationid
+                            type: string
+                          publicCatoIpId:
+                            description: |-
+                              (String) publiccatoipid
+                              publiccatoipid
+                            type: string
+                          tunnels:
+                            description: (Attributes List) tunnels (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                lastMileBw:
+                                  description: (Attributes) lastmilebw (see below
+                                    for nested schema)
+                                  properties:
+                                    downstream:
+                                      description: |-
+                                        (Number) Downstream
+                                        Downstream
+                                      type: number
+                                    downstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) downstreamMbpsPrecision
+                                        downstreamMbpsPrecision
+                                      type: number
+                                    upstream:
+                                      description: |-
+                                        (Number) upstream
+                                        upstream
+                                      type: number
+                                    upstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) upstreamMbpsPrecision
+                                        upstreamMbpsPrecision
+                                      type: number
+                                  type: object
+                                privateCatoIp:
+                                  description: |-
+                                    (String) privatecatoip
+                                    privatecatoip
+                                  type: string
+                                privateSiteIp:
+                                  description: |-
+                                    (String) privatesiteip
+                                    privatesiteip
+                                  type: string
+                                pskSecretRef:
+                                  description: |-
+                                    (String, Sensitive) psk
+                                    psk
+                                  properties:
+                                    key:
+                                      description: The key to select.
+                                      type: string
+                                    name:
+                                      description: Name of the secret.
+                                      type: string
+                                    namespace:
+                                      description: Namespace of the secret.
+                                      type: string
+                                  required:
+                                  - key
+                                  - name
+                                  - namespace
+                                  type: object
+                                publicSiteIp:
+                                  description: |-
+                                    (String) publicsiteip
+                                    publicsiteip
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  name:
+                    description: |-
+                      (String) Ipsec Site Name
+                      Ipsec Site Name
+                    type: string
+                  nativeNetworkRange:
+                    description: |-
+                      (String) NativeNetworkRange
+                      NativeNetworkRange
+                    type: string
+                  nativeNetworkRangeId:
+                    description: |-
+                      (String) Site native IP range ID (for update purpose)
+                      Site native IP range ID (for update purpose)
+                    type: string
+                  siteLocation:
+                    description: (Attributes) SiteLocation (see below for nested schema)
+                    properties:
+                      address:
+                        description: |-
+                          (String) Address
+                          Address
+                        type: string
+                      city:
+                        description: |-
+                          (String) City
+                          City
+                        type: string
+                      countryCode:
+                        description: |-
+                          (String) Country Code
+                          Country Code
+                        type: string
+                      stateCode:
+                        description: |-
+                          (String) State Code
+                          State Code
+                        type: string
+                      timezone:
+                        description: |-
+                          (String) Timezone
+                          Timezone
+                        type: string
+                    type: object
+                  siteType:
+                    description: |-
+                      (String) Valid values are: BRANCH, HEADQUARTERS, CLOUD_DC, and DATACENTER.
+                      Valid values are: BRANCH, HEADQUARTERS, CLOUD_DC, and DATACENTER.
+                    type: string
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  description:
+                    description: |-
+                      (String) description
+                      description
+                    type: string
+                  ipsec:
+                    description: (Attributes) IPSec Configuration (see below for nested
+                      schema)
+                    properties:
+                      authMessage:
+                        description: (Attributes) IKE authentication message configuration
+                          (see below for nested schema)
+                        properties:
+                          cipher:
+                            description: |-
+                              (String) Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                              Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                            type: string
+                          dhGroup:
+                            description: |-
+                              Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                              Diffie-Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                            type: string
+                          integrity:
+                            description: |-
+                              (String) Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                          prf:
+                            description: |-
+                              Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Pseudo-Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                        type: object
+                      connectionMode:
+                        description: |-
+                          (String) Connection mode for IPSec tunnel. Valid values: RESPONDER_ONLY, BIDIRECTIONAL
+                          Connection mode for IPSec tunnel. Valid values: RESPONDER_ONLY, BIDIRECTIONAL
+                        type: string
+                      identificationType:
+                        description: |-
+                          (String) Identification type for IPSec. Only applicable when connection_mode is RESPONDER_ONLY. Valid values: IPV4, FQDN, EMAIL, KEY_ID
+                          Identification type for IPSec. Only applicable when connection_mode is RESPONDER_ONLY. Valid values: IPV4, FQDN, EMAIL, KEY_ID
+                        type: string
+                      initMessage:
+                        description: (Attributes) IKE initialization message configuration
+                          (see below for nested schema)
+                        properties:
+                          cipher:
+                            description: |-
+                              (String) Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                              Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                            type: string
+                          dhGroup:
+                            description: |-
+                              Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                              Diffie-Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                            type: string
+                          integrity:
+                            description: |-
+                              (String) Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                          prf:
+                            description: |-
+                              Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Pseudo-Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                        type: object
+                      networkRanges:
+                        description: |-
+                          (List of String) List of network ranges (e.g., ['servers:192.168.11.0/24', 'desktops:192.169.11.0/24'])
+                          List of network ranges (e.g., ['servers:192.168.11.0/24', 'desktops:192.169.11.0/24'])
+                        items:
+                          type: string
+                        type: array
+                      primary:
+                        description: (Attributes) primary (see below for nested schema)
+                        properties:
+                          destinationType:
+                            description: |-
+                              (String) destinationtype
+                              destinationtype
+                            type: string
+                          popLocationId:
+                            description: |-
+                              (String) poplocationid
+                              poplocationid
+                            type: string
+                          publicCatoIpId:
+                            description: |-
+                              (String) publiccatoipid
+                              publiccatoipid
+                            type: string
+                          tunnels:
+                            description: (Attributes List) tunnels (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                lastMileBw:
+                                  description: (Attributes) lastmilebw (see below
+                                    for nested schema)
+                                  properties:
+                                    downstream:
+                                      description: |-
+                                        (Number) Downstream
+                                        Downstream
+                                      type: number
+                                    downstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) downstreamMbpsPrecision
+                                        downstreamMbpsPrecision
+                                      type: number
+                                    upstream:
+                                      description: |-
+                                        (Number) upstream
+                                        upstream
+                                      type: number
+                                    upstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) upstreamMbpsPrecision
+                                        upstreamMbpsPrecision
+                                      type: number
+                                  type: object
+                                privateCatoIp:
+                                  description: |-
+                                    (String) privatecatoip
+                                    privatecatoip
+                                  type: string
+                                privateSiteIp:
+                                  description: |-
+                                    (String) privatesiteip
+                                    privatesiteip
+                                  type: string
+                                pskSecretRef:
+                                  description: |-
+                                    (String, Sensitive) psk
+                                    psk
+                                  properties:
+                                    key:
+                                      description: The key to select.
+                                      type: string
+                                    name:
+                                      description: Name of the secret.
+                                      type: string
+                                    namespace:
+                                      description: Namespace of the secret.
+                                      type: string
+                                  required:
+                                  - key
+                                  - name
+                                  - namespace
+                                  type: object
+                                publicSiteIp:
+                                  description: |-
+                                    (String) publicsiteip
+                                    publicsiteip
+                                  type: string
+                              required:
+                              - pskSecretRef
+                              type: object
+                            type: array
+                        type: object
+                      secondary:
+                        description: (Attributes) secondary (see below for nested
+                          schema)
+                        properties:
+                          destinationType:
+                            description: |-
+                              (String) destinationtype
+                              destinationtype
+                            type: string
+                          popLocationId:
+                            description: |-
+                              (String) poplocationid
+                              poplocationid
+                            type: string
+                          publicCatoIpId:
+                            description: |-
+                              (String) publiccatoipid
+                              publiccatoipid
+                            type: string
+                          tunnels:
+                            description: (Attributes List) tunnels (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                lastMileBw:
+                                  description: (Attributes) lastmilebw (see below
+                                    for nested schema)
+                                  properties:
+                                    downstream:
+                                      description: |-
+                                        (Number) Downstream
+                                        Downstream
+                                      type: number
+                                    downstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) downstreamMbpsPrecision
+                                        downstreamMbpsPrecision
+                                      type: number
+                                    upstream:
+                                      description: |-
+                                        (Number) upstream
+                                        upstream
+                                      type: number
+                                    upstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) upstreamMbpsPrecision
+                                        upstreamMbpsPrecision
+                                      type: number
+                                  type: object
+                                privateCatoIp:
+                                  description: |-
+                                    (String) privatecatoip
+                                    privatecatoip
+                                  type: string
+                                privateSiteIp:
+                                  description: |-
+                                    (String) privatesiteip
+                                    privatesiteip
+                                  type: string
+                                pskSecretRef:
+                                  description: |-
+                                    (String, Sensitive) psk
+                                    psk
+                                  properties:
+                                    key:
+                                      description: The key to select.
+                                      type: string
+                                    name:
+                                      description: Name of the secret.
+                                      type: string
+                                    namespace:
+                                      description: Namespace of the secret.
+                                      type: string
+                                  required:
+                                  - key
+                                  - name
+                                  - namespace
+                                  type: object
+                                publicSiteIp:
+                                  description: |-
+                                    (String) publicsiteip
+                                    publicsiteip
+                                  type: string
+                              required:
+                              - pskSecretRef
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  name:
+                    description: |-
+                      (String) Ipsec Site Name
+                      Ipsec Site Name
+                    type: string
+                  nativeNetworkRange:
+                    description: |-
+                      (String) NativeNetworkRange
+                      NativeNetworkRange
+                    type: string
+                  nativeNetworkRangeId:
+                    description: |-
+                      (String) Site native IP range ID (for update purpose)
+                      Site native IP range ID (for update purpose)
+                    type: string
+                  siteLocation:
+                    description: (Attributes) SiteLocation (see below for nested schema)
+                    properties:
+                      address:
+                        description: |-
+                          (String) Address
+                          Address
+                        type: string
+                      city:
+                        description: |-
+                          (String) City
+                          City
+                        type: string
+                      countryCode:
+                        description: |-
+                          (String) Country Code
+                          Country Code
+                        type: string
+                      stateCode:
+                        description: |-
+                          (String) State Code
+                          State Code
+                        type: string
+                      timezone:
+                        description: |-
+                          (String) Timezone
+                          Timezone
+                        type: string
+                    type: object
+                  siteType:
+                    description: |-
+                      (String) Valid values are: BRANCH, HEADQUARTERS, CLOUD_DC, and DATACENTER.
+                      Valid values are: BRANCH, HEADQUARTERS, CLOUD_DC, and DATACENTER.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.description is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.description)
+                || (has(self.initProvider) && has(self.initProvider.description))'
+            - message: spec.forProvider.ipsec is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.ipsec)
+                || (has(self.initProvider) && has(self.initProvider.ipsec))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.nativeNetworkRange is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.nativeNetworkRange)
+                || (has(self.initProvider) && has(self.initProvider.nativeNetworkRange))'
+            - message: spec.forProvider.siteLocation is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.siteLocation)
+                || (has(self.initProvider) && has(self.initProvider.siteLocation))'
+            - message: spec.forProvider.siteType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.siteType)
+                || (has(self.initProvider) && has(self.initProvider.siteType))'
+          status:
+            description: IpsecSiteStatus defines the observed state of IpsecSite.
+            properties:
+              atProvider:
+                properties:
+                  description:
+                    description: |-
+                      (String) description
+                      description
+                    type: string
+                  id:
+                    description: (String) Identifier for Ipsec Site
+                    type: string
+                  interfaceId:
+                    description: |-
+                      (String) IPSec interface ID
+                      IPSec interface ID
+                    type: string
+                  ipsec:
+                    description: (Attributes) IPSec Configuration (see below for nested
+                      schema)
+                    properties:
+                      authMessage:
+                        description: (Attributes) IKE authentication message configuration
+                          (see below for nested schema)
+                        properties:
+                          cipher:
+                            description: |-
+                              (String) Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                              Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                            type: string
+                          dhGroup:
+                            description: |-
+                              Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                              Diffie-Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                            type: string
+                          integrity:
+                            description: |-
+                              (String) Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                          prf:
+                            description: |-
+                              Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Pseudo-Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                        type: object
+                      connectionMode:
+                        description: |-
+                          (String) Connection mode for IPSec tunnel. Valid values: RESPONDER_ONLY, BIDIRECTIONAL
+                          Connection mode for IPSec tunnel. Valid values: RESPONDER_ONLY, BIDIRECTIONAL
+                        type: string
+                      identificationType:
+                        description: |-
+                          (String) Identification type for IPSec. Only applicable when connection_mode is RESPONDER_ONLY. Valid values: IPV4, FQDN, EMAIL, KEY_ID
+                          Identification type for IPSec. Only applicable when connection_mode is RESPONDER_ONLY. Valid values: IPV4, FQDN, EMAIL, KEY_ID
+                        type: string
+                      initMessage:
+                        description: (Attributes) IKE initialization message configuration
+                          (see below for nested schema)
+                        properties:
+                          cipher:
+                            description: |-
+                              (String) Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                              Cipher algorithm. Valid values: NONE, AUTOMATIC, AES_CBC_128, AES_CBC_256, AES_GCM_128, AES_GCM_256, DES3_CBC
+                            type: string
+                          dhGroup:
+                            description: |-
+                              Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                              Diffie-Hellman group. Valid values: NONE, AUTOMATIC, DH_2_MODP1024, DH_5_MODP1536, DH_14_MODP2048, DH_15_MODP3072, DH_16_MODP4096, DH_19_ECP256, DH_20_ECP384, DH_21_ECP521
+                            type: string
+                          integrity:
+                            description: |-
+                              (String) Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Integrity algorithm. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                          prf:
+                            description: |-
+                              Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                              Pseudo-Random Function. Valid values: NONE, AUTOMATIC, MD5, SHA1, SHA256, SHA384, SHA512
+                            type: string
+                        type: object
+                      networkRanges:
+                        description: |-
+                          (List of String) List of network ranges (e.g., ['servers:192.168.11.0/24', 'desktops:192.169.11.0/24'])
+                          List of network ranges (e.g., ['servers:192.168.11.0/24', 'desktops:192.169.11.0/24'])
+                        items:
+                          type: string
+                        type: array
+                      primary:
+                        description: (Attributes) primary (see below for nested schema)
+                        properties:
+                          destinationType:
+                            description: |-
+                              (String) destinationtype
+                              destinationtype
+                            type: string
+                          popLocationId:
+                            description: |-
+                              (String) poplocationid
+                              poplocationid
+                            type: string
+                          publicCatoIpId:
+                            description: |-
+                              (String) publiccatoipid
+                              publiccatoipid
+                            type: string
+                          tunnels:
+                            description: (Attributes List) tunnels (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                lastMileBw:
+                                  description: (Attributes) lastmilebw (see below
+                                    for nested schema)
+                                  properties:
+                                    downstream:
+                                      description: |-
+                                        (Number) Downstream
+                                        Downstream
+                                      type: number
+                                    downstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) downstreamMbpsPrecision
+                                        downstreamMbpsPrecision
+                                      type: number
+                                    upstream:
+                                      description: |-
+                                        (Number) upstream
+                                        upstream
+                                      type: number
+                                    upstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) upstreamMbpsPrecision
+                                        upstreamMbpsPrecision
+                                      type: number
+                                  type: object
+                                privateCatoIp:
+                                  description: |-
+                                    (String) privatecatoip
+                                    privatecatoip
+                                  type: string
+                                privateSiteIp:
+                                  description: |-
+                                    (String) privatesiteip
+                                    privatesiteip
+                                  type: string
+                                publicSiteIp:
+                                  description: |-
+                                    (String) publicsiteip
+                                    publicsiteip
+                                  type: string
+                                tunnelId:
+                                  description: |-
+                                    (String) tunnel ID
+                                    tunnel ID
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      secondary:
+                        description: (Attributes) secondary (see below for nested
+                          schema)
+                        properties:
+                          destinationType:
+                            description: |-
+                              (String) destinationtype
+                              destinationtype
+                            type: string
+                          popLocationId:
+                            description: |-
+                              (String) poplocationid
+                              poplocationid
+                            type: string
+                          publicCatoIpId:
+                            description: |-
+                              (String) publiccatoipid
+                              publiccatoipid
+                            type: string
+                          tunnels:
+                            description: (Attributes List) tunnels (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                lastMileBw:
+                                  description: (Attributes) lastmilebw (see below
+                                    for nested schema)
+                                  properties:
+                                    downstream:
+                                      description: |-
+                                        (Number) Downstream
+                                        Downstream
+                                      type: number
+                                    downstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) downstreamMbpsPrecision
+                                        downstreamMbpsPrecision
+                                      type: number
+                                    upstream:
+                                      description: |-
+                                        (Number) upstream
+                                        upstream
+                                      type: number
+                                    upstreamMbpsPrecision:
+                                      description: |-
+                                        (Number) upstreamMbpsPrecision
+                                        upstreamMbpsPrecision
+                                      type: number
+                                  type: object
+                                privateCatoIp:
+                                  description: |-
+                                    (String) privatecatoip
+                                    privatecatoip
+                                  type: string
+                                privateSiteIp:
+                                  description: |-
+                                    (String) privatesiteip
+                                    privatesiteip
+                                  type: string
+                                publicSiteIp:
+                                  description: |-
+                                    (String) publicsiteip
+                                    publicsiteip
+                                  type: string
+                                tunnelId:
+                                  description: |-
+                                    (String) tunnel ID
+                                    tunnel ID
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      siteId:
+                        description: |-
+                          (String) Site Identifier for Ipsec Site
+                          Site Identifier for Ipsec Site
+                        type: string
+                    type: object
+                  name:
+                    description: |-
+                      (String) Ipsec Site Name
+                      Ipsec Site Name
+                    type: string
+                  nativeNetworkRange:
+                    description: |-
+                      (String) NativeNetworkRange
+                      NativeNetworkRange
+                    type: string
+                  nativeNetworkRangeId:
+                    description: |-
+                      (String) Site native IP range ID (for update purpose)
+                      Site native IP range ID (for update purpose)
+                    type: string
+                  siteLocation:
+                    description: (Attributes) SiteLocation (see below for nested schema)
+                    properties:
+                      address:
+                        description: |-
+                          (String) Address
+                          Address
+                        type: string
+                      city:
+                        description: |-
+                          (String) City
+                          City
+                        type: string
+                      countryCode:
+                        description: |-
+                          (String) Country Code
+                          Country Code
+                        type: string
+                      stateCode:
+                        description: |-
+                          (String) State Code
+                          State Code
+                        type: string
+                      timezone:
+                        description: |-
+                          (String) Timezone
+                          Timezone
+                        type: string
+                    type: object
+                  siteType:
+                    description: |-
+                      (String) Valid values are: BRANCH, HEADQUARTERS, CLOUD_DC, and DATACENTER.
+                      Valid values are: BRANCH, HEADQUARTERS, CLOUD_DC, and DATACENTER.
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

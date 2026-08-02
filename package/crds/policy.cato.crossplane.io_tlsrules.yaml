@@ -1,0 +1,1889 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: tlsrules.policy.cato.crossplane.io
+spec:
+  group: policy.cato.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - cato
+    kind: TlsRule
+    listKind: TlsRuleList
+    plural: tlsrules
+    singular: tlsrule
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: TlsRule is the Schema for the TlsRules API. The _tls_rule resource
+          contains the configuration parameters necessary to add rule to the TLS Inspection
+          Policy. Documentation for the underlying API used in this resource can be
+          found at mutation.policy.tlsInspect.addRule() https://api.catonetworks.com/documentation/#mutation-policy.tlsInspect.addRule.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: TlsRuleSpec defines the desired state of TlsRule
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  at:
+                    description: (Attributes) Position of the rule in the policy (see
+                      below for nested schema)
+                    properties:
+                      position:
+                        description: |-
+                          (String) Position relative to a policy, a section or another rule (FIRST_IN_POLICY, LAST_IN_POLICY, FIRST_IN_SECTION, LAST_IN_SECTION, BEFORE_RULE, AFTER_RULE)
+                          Position relative to a policy, a section or another rule (FIRST_IN_POLICY, LAST_IN_POLICY, FIRST_IN_SECTION, LAST_IN_SECTION, BEFORE_RULE, AFTER_RULE)
+                        type: string
+                      ref:
+                        description: |-
+                          (String) The identifier of the object (e.g. a rule, a section) relative to which the position of the added rule is defined
+                          The identifier of the object (e.g. a rule, a section) relative to which the position of the added rule is defined
+                        type: string
+                    type: object
+                  rule:
+                    description: (Attributes) Parameters for the rule you are adding
+                      (see below for nested schema)
+                    properties:
+                      action:
+                        description: |-
+                          (String) The action applied by TLS Inspection if the rule is matched (INSPECT, BYPASS)
+                          The action applied by TLS Inspection if the rule is matched (INSPECT, BYPASS)
+                        type: string
+                      application:
+                        description: (Attributes) Application matching criteria (see
+                          below for nested schema)
+                        properties:
+                          appCategory:
+                            description: (Attributes Set) Application categories (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    App category ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    App category name
+                                  type: string
+                              type: object
+                            type: array
+                          application:
+                            description: (Attributes) Application matching criteria
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Application ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Application name
+                                  type: string
+                              type: object
+                            type: array
+                          country:
+                            description: (Attributes Set) Countries (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Country ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Country name
+                                  type: string
+                              type: object
+                            type: array
+                          customApp:
+                            description: (Attributes Set) Custom applications (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Custom app ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Custom app name
+                                  type: string
+                              type: object
+                            type: array
+                          customCategory:
+                            description: (Attributes Set) Custom categories (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Custom category ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Custom category name
+                                  type: string
+                              type: object
+                            type: array
+                          customService:
+                            description: (Attributes) Custom service definition (see
+                              below for nested schema)
+                            properties:
+                              port:
+                                description: |-
+                                  (List of String) Port list
+                                  Port list
+                                items:
+                                  type: string
+                                type: array
+                              portRange:
+                                description: (Attributes) Port range (see below for
+                                  nested schema)
+                                properties:
+                                  from:
+                                    description: |-
+                                      (String) Start port
+                                      Start port
+                                    type: string
+                                  to:
+                                    description: |-
+                                      (String) End port
+                                      End port
+                                    type: string
+                                type: object
+                              protocol:
+                                description: |-
+                                  (String) Protocol (TCP, UDP, ICMP, ANY)
+                                  Protocol (TCP, UDP, ICMP, ANY)
+                                type: string
+                            type: object
+                          customServiceIp:
+                            description: (Attributes) Custom service IP definition
+                              (see below for nested schema)
+                            properties:
+                              ip:
+                                description: |-
+                                  (List of String) IPv4 address list
+                                  IP address
+                                type: string
+                              ipRange:
+                                description: (Attributes List) IP address ranges (see
+                                  below for nested schema)
+                                properties:
+                                  from:
+                                    description: |-
+                                      (String) Start port
+                                      Start IP
+                                    type: string
+                                  to:
+                                    description: |-
+                                      (String) End port
+                                      End IP
+                                    type: string
+                                type: object
+                              name:
+                                description: |-
+                                  (String) Name of the rule
+                                  Service name
+                                type: string
+                            type: object
+                          domain:
+                            description: |-
+                              (List of String) Domain list
+                              Domain list
+                            items:
+                              type: string
+                            type: array
+                          fqdn:
+                            description: |-
+                              (List of String) FQDN list
+                              FQDN list
+                            items:
+                              type: string
+                            type: array
+                          globalIpRange:
+                            description: (Attributes Set) Global IP ranges (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Global IP range ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Global IP range name
+                                  type: string
+                              type: object
+                            type: array
+                          ip:
+                            description: |-
+                              (List of String) IPv4 address list
+                              IPv4 address list
+                            items:
+                              type: string
+                            type: array
+                          ipRange:
+                            description: (Attributes List) IP address ranges (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                from:
+                                  description: |-
+                                    (String) Start port
+                                    Range start IP address
+                                  type: string
+                                to:
+                                  description: |-
+                                    (String) End port
+                                    Range end IP address
+                                  type: string
+                              type: object
+                            type: array
+                          remoteAsn:
+                            description: |-
+                              (List of String) Remote ASN list
+                              Remote ASN list
+                            items:
+                              type: string
+                            type: array
+                          service:
+                            description: (Attributes Set) Services (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Service ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Service name
+                                  type: string
+                              type: object
+                            type: array
+                          subnet:
+                            description: |-
+                              (List of String) Subnet list
+                              Subnet list
+                            items:
+                              type: string
+                            type: array
+                          tlsInspectCategory:
+                            description: |-
+                              (String) TLS Inspection category (POPULAR_CLOUD_APPS, STREAMING_MEDIA)
+                              TLS Inspection category (POPULAR_CLOUD_APPS, STREAMING_MEDIA)
+                            type: string
+                        type: object
+                      connectionOrigin:
+                        description: |-
+                          (String) Connection origin filter (ANY, REMOTE, SITE)
+                          Connection origin filter (ANY, REMOTE, SITE)
+                        type: string
+                      country:
+                        description: (Attributes Set) Countries (see below for nested
+                          schema)
+                        items:
+                          properties:
+                            id:
+                              description: |-
+                                (String) Identifier of the TLS Inspection Rule
+                                Country ID
+                              type: string
+                            name:
+                              description: |-
+                                (String) Name of the rule
+                                Country name
+                              type: string
+                          type: object
+                        type: array
+                      description:
+                        description: |-
+                          (String) Description of the rule
+                          Description of the rule
+                        type: string
+                      devicePostureProfile:
+                        description: (Attributes Set) Device posture profiles (see
+                          below for nested schema)
+                        items:
+                          properties:
+                            id:
+                              description: |-
+                                (String) Identifier of the TLS Inspection Rule
+                                Device posture profile ID
+                              type: string
+                            name:
+                              description: |-
+                                (String) Name of the rule
+                                Device posture profile name
+                              type: string
+                          type: object
+                        type: array
+                      enabled:
+                        description: |-
+                          (Boolean) Attribute to define rule status (enabled or disabled)
+                          Attribute to define rule status (enabled or disabled)
+                        type: boolean
+                      name:
+                        description: |-
+                          (String) Name of the rule
+                          Name of the rule
+                        type: string
+                      platform:
+                        description: |-
+                          (String) Platform filter (ANDROID, EMBEDDED, IOS, LINUX, MACOS, WINDOWS)
+                          Platform filter (ANDROID, EMBEDDED, IOS, LINUX, MACOS, WINDOWS)
+                        type: string
+                      source:
+                        description: (Attributes) Source traffic matching criteria.
+                          Logical 'OR' is applied within the criteria set. Logical
+                          'AND' is applied between criteria sets. (see below for nested
+                          schema)
+                        properties:
+                          floatingSubnet:
+                            description: (Attributes Set) Floating subnets (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Floating subnet ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Floating subnet name
+                                  type: string
+                              type: object
+                            type: array
+                          globalIpRange:
+                            description: (Attributes Set) Global IP ranges (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Global IP range ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Global IP range name
+                                  type: string
+                              type: object
+                            type: array
+                          group:
+                            description: (Attributes Set) Groups (see below for nested
+                              schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Group name
+                                  type: string
+                              type: object
+                            type: array
+                          host:
+                            description: (Attributes Set) Hosts and servers defined
+                              for your account (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Host ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Host name
+                                  type: string
+                              type: object
+                            type: array
+                          ip:
+                            description: |-
+                              (List of String) IPv4 address list
+                              IPv4 address list
+                            items:
+                              type: string
+                            type: array
+                          ipRange:
+                            description: (Attributes List) IP address ranges (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                from:
+                                  description: |-
+                                    (String) Start port
+                                    Range start IP address
+                                  type: string
+                                to:
+                                  description: |-
+                                    (String) End port
+                                    Range end IP address
+                                  type: string
+                              type: object
+                            type: array
+                          networkInterface:
+                            description: (Attributes Set) Network interfaces (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Network interface ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Network interface name
+                                  type: string
+                              type: object
+                            type: array
+                          site:
+                            description: (Attributes Set) Sites defined for your account
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Site ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Site name
+                                  type: string
+                              type: object
+                            type: array
+                          siteNetworkSubnet:
+                            description: (Attributes Set) Site network subnets (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Site network subnet ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Site network subnet name
+                                  type: string
+                              type: object
+                            type: array
+                          subnet:
+                            description: |-
+                              (List of String) Subnet list
+                              Subnet list
+                            items:
+                              type: string
+                            type: array
+                          systemGroup:
+                            description: (Attributes Set) System groups (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    System group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    System group name
+                                  type: string
+                              type: object
+                            type: array
+                          user:
+                            description: (Attributes Set) Users (see below for nested
+                              schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    User ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    User name
+                                  type: string
+                              type: object
+                            type: array
+                          usersGroup:
+                            description: (Attributes Set) User groups (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    User group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    User group name
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      untrustedCertificateAction:
+                        description: |-
+                          (String) Action for untrusted certificates (ALLOW, BLOCK, PROMPT)
+                          Action for untrusted certificates (ALLOW, BLOCK, PROMPT)
+                        type: string
+                    type: object
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  at:
+                    description: (Attributes) Position of the rule in the policy (see
+                      below for nested schema)
+                    properties:
+                      position:
+                        description: |-
+                          (String) Position relative to a policy, a section or another rule (FIRST_IN_POLICY, LAST_IN_POLICY, FIRST_IN_SECTION, LAST_IN_SECTION, BEFORE_RULE, AFTER_RULE)
+                          Position relative to a policy, a section or another rule (FIRST_IN_POLICY, LAST_IN_POLICY, FIRST_IN_SECTION, LAST_IN_SECTION, BEFORE_RULE, AFTER_RULE)
+                        type: string
+                      ref:
+                        description: |-
+                          (String) The identifier of the object (e.g. a rule, a section) relative to which the position of the added rule is defined
+                          The identifier of the object (e.g. a rule, a section) relative to which the position of the added rule is defined
+                        type: string
+                    type: object
+                  rule:
+                    description: (Attributes) Parameters for the rule you are adding
+                      (see below for nested schema)
+                    properties:
+                      action:
+                        description: |-
+                          (String) The action applied by TLS Inspection if the rule is matched (INSPECT, BYPASS)
+                          The action applied by TLS Inspection if the rule is matched (INSPECT, BYPASS)
+                        type: string
+                      application:
+                        description: (Attributes) Application matching criteria (see
+                          below for nested schema)
+                        properties:
+                          appCategory:
+                            description: (Attributes Set) Application categories (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    App category ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    App category name
+                                  type: string
+                              type: object
+                            type: array
+                          application:
+                            description: (Attributes) Application matching criteria
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Application ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Application name
+                                  type: string
+                              type: object
+                            type: array
+                          country:
+                            description: (Attributes Set) Countries (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Country ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Country name
+                                  type: string
+                              type: object
+                            type: array
+                          customApp:
+                            description: (Attributes Set) Custom applications (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Custom app ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Custom app name
+                                  type: string
+                              type: object
+                            type: array
+                          customCategory:
+                            description: (Attributes Set) Custom categories (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Custom category ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Custom category name
+                                  type: string
+                              type: object
+                            type: array
+                          customService:
+                            description: (Attributes) Custom service definition (see
+                              below for nested schema)
+                            properties:
+                              port:
+                                description: |-
+                                  (List of String) Port list
+                                  Port list
+                                items:
+                                  type: string
+                                type: array
+                              portRange:
+                                description: (Attributes) Port range (see below for
+                                  nested schema)
+                                properties:
+                                  from:
+                                    description: |-
+                                      (String) Start port
+                                      Start port
+                                    type: string
+                                  to:
+                                    description: |-
+                                      (String) End port
+                                      End port
+                                    type: string
+                                type: object
+                              protocol:
+                                description: |-
+                                  (String) Protocol (TCP, UDP, ICMP, ANY)
+                                  Protocol (TCP, UDP, ICMP, ANY)
+                                type: string
+                            type: object
+                          customServiceIp:
+                            description: (Attributes) Custom service IP definition
+                              (see below for nested schema)
+                            properties:
+                              ip:
+                                description: |-
+                                  (List of String) IPv4 address list
+                                  IP address
+                                type: string
+                              ipRange:
+                                description: (Attributes List) IP address ranges (see
+                                  below for nested schema)
+                                properties:
+                                  from:
+                                    description: |-
+                                      (String) Start port
+                                      Start IP
+                                    type: string
+                                  to:
+                                    description: |-
+                                      (String) End port
+                                      End IP
+                                    type: string
+                                type: object
+                              name:
+                                description: |-
+                                  (String) Name of the rule
+                                  Service name
+                                type: string
+                            type: object
+                          domain:
+                            description: |-
+                              (List of String) Domain list
+                              Domain list
+                            items:
+                              type: string
+                            type: array
+                          fqdn:
+                            description: |-
+                              (List of String) FQDN list
+                              FQDN list
+                            items:
+                              type: string
+                            type: array
+                          globalIpRange:
+                            description: (Attributes Set) Global IP ranges (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Global IP range ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Global IP range name
+                                  type: string
+                              type: object
+                            type: array
+                          ip:
+                            description: |-
+                              (List of String) IPv4 address list
+                              IPv4 address list
+                            items:
+                              type: string
+                            type: array
+                          ipRange:
+                            description: (Attributes List) IP address ranges (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                from:
+                                  description: |-
+                                    (String) Start port
+                                    Range start IP address
+                                  type: string
+                                to:
+                                  description: |-
+                                    (String) End port
+                                    Range end IP address
+                                  type: string
+                              type: object
+                            type: array
+                          remoteAsn:
+                            description: |-
+                              (List of String) Remote ASN list
+                              Remote ASN list
+                            items:
+                              type: string
+                            type: array
+                          service:
+                            description: (Attributes Set) Services (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Service ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Service name
+                                  type: string
+                              type: object
+                            type: array
+                          subnet:
+                            description: |-
+                              (List of String) Subnet list
+                              Subnet list
+                            items:
+                              type: string
+                            type: array
+                          tlsInspectCategory:
+                            description: |-
+                              (String) TLS Inspection category (POPULAR_CLOUD_APPS, STREAMING_MEDIA)
+                              TLS Inspection category (POPULAR_CLOUD_APPS, STREAMING_MEDIA)
+                            type: string
+                        type: object
+                      connectionOrigin:
+                        description: |-
+                          (String) Connection origin filter (ANY, REMOTE, SITE)
+                          Connection origin filter (ANY, REMOTE, SITE)
+                        type: string
+                      country:
+                        description: (Attributes Set) Countries (see below for nested
+                          schema)
+                        items:
+                          properties:
+                            id:
+                              description: |-
+                                (String) Identifier of the TLS Inspection Rule
+                                Country ID
+                              type: string
+                            name:
+                              description: |-
+                                (String) Name of the rule
+                                Country name
+                              type: string
+                          type: object
+                        type: array
+                      description:
+                        description: |-
+                          (String) Description of the rule
+                          Description of the rule
+                        type: string
+                      devicePostureProfile:
+                        description: (Attributes Set) Device posture profiles (see
+                          below for nested schema)
+                        items:
+                          properties:
+                            id:
+                              description: |-
+                                (String) Identifier of the TLS Inspection Rule
+                                Device posture profile ID
+                              type: string
+                            name:
+                              description: |-
+                                (String) Name of the rule
+                                Device posture profile name
+                              type: string
+                          type: object
+                        type: array
+                      enabled:
+                        description: |-
+                          (Boolean) Attribute to define rule status (enabled or disabled)
+                          Attribute to define rule status (enabled or disabled)
+                        type: boolean
+                      name:
+                        description: |-
+                          (String) Name of the rule
+                          Name of the rule
+                        type: string
+                      platform:
+                        description: |-
+                          (String) Platform filter (ANDROID, EMBEDDED, IOS, LINUX, MACOS, WINDOWS)
+                          Platform filter (ANDROID, EMBEDDED, IOS, LINUX, MACOS, WINDOWS)
+                        type: string
+                      source:
+                        description: (Attributes) Source traffic matching criteria.
+                          Logical 'OR' is applied within the criteria set. Logical
+                          'AND' is applied between criteria sets. (see below for nested
+                          schema)
+                        properties:
+                          floatingSubnet:
+                            description: (Attributes Set) Floating subnets (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Floating subnet ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Floating subnet name
+                                  type: string
+                              type: object
+                            type: array
+                          globalIpRange:
+                            description: (Attributes Set) Global IP ranges (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Global IP range ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Global IP range name
+                                  type: string
+                              type: object
+                            type: array
+                          group:
+                            description: (Attributes Set) Groups (see below for nested
+                              schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Group name
+                                  type: string
+                              type: object
+                            type: array
+                          host:
+                            description: (Attributes Set) Hosts and servers defined
+                              for your account (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Host ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Host name
+                                  type: string
+                              type: object
+                            type: array
+                          ip:
+                            description: |-
+                              (List of String) IPv4 address list
+                              IPv4 address list
+                            items:
+                              type: string
+                            type: array
+                          ipRange:
+                            description: (Attributes List) IP address ranges (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                from:
+                                  description: |-
+                                    (String) Start port
+                                    Range start IP address
+                                  type: string
+                                to:
+                                  description: |-
+                                    (String) End port
+                                    Range end IP address
+                                  type: string
+                              type: object
+                            type: array
+                          networkInterface:
+                            description: (Attributes Set) Network interfaces (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Network interface ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Network interface name
+                                  type: string
+                              type: object
+                            type: array
+                          site:
+                            description: (Attributes Set) Sites defined for your account
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Site ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Site name
+                                  type: string
+                              type: object
+                            type: array
+                          siteNetworkSubnet:
+                            description: (Attributes Set) Site network subnets (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Site network subnet ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Site network subnet name
+                                  type: string
+                              type: object
+                            type: array
+                          subnet:
+                            description: |-
+                              (List of String) Subnet list
+                              Subnet list
+                            items:
+                              type: string
+                            type: array
+                          systemGroup:
+                            description: (Attributes Set) System groups (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    System group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    System group name
+                                  type: string
+                              type: object
+                            type: array
+                          user:
+                            description: (Attributes Set) Users (see below for nested
+                              schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    User ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    User name
+                                  type: string
+                              type: object
+                            type: array
+                          usersGroup:
+                            description: (Attributes Set) User groups (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    User group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    User group name
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      untrustedCertificateAction:
+                        description: |-
+                          (String) Action for untrusted certificates (ALLOW, BLOCK, PROMPT)
+                          Action for untrusted certificates (ALLOW, BLOCK, PROMPT)
+                        type: string
+                    type: object
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.at is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.at)
+                || (has(self.initProvider) && has(self.initProvider.at))'
+            - message: spec.forProvider.rule is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.rule)
+                || (has(self.initProvider) && has(self.initProvider.rule))'
+          status:
+            description: TlsRuleStatus defines the observed state of TlsRule.
+            properties:
+              atProvider:
+                properties:
+                  at:
+                    description: (Attributes) Position of the rule in the policy (see
+                      below for nested schema)
+                    properties:
+                      position:
+                        description: |-
+                          (String) Position relative to a policy, a section or another rule (FIRST_IN_POLICY, LAST_IN_POLICY, FIRST_IN_SECTION, LAST_IN_SECTION, BEFORE_RULE, AFTER_RULE)
+                          Position relative to a policy, a section or another rule (FIRST_IN_POLICY, LAST_IN_POLICY, FIRST_IN_SECTION, LAST_IN_SECTION, BEFORE_RULE, AFTER_RULE)
+                        type: string
+                      ref:
+                        description: |-
+                          (String) The identifier of the object (e.g. a rule, a section) relative to which the position of the added rule is defined
+                          The identifier of the object (e.g. a rule, a section) relative to which the position of the added rule is defined
+                        type: string
+                    type: object
+                  id:
+                    description: (String) Identifier of the TLS Inspection Rule
+                    type: string
+                  rule:
+                    description: (Attributes) Parameters for the rule you are adding
+                      (see below for nested schema)
+                    properties:
+                      action:
+                        description: |-
+                          (String) The action applied by TLS Inspection if the rule is matched (INSPECT, BYPASS)
+                          The action applied by TLS Inspection if the rule is matched (INSPECT, BYPASS)
+                        type: string
+                      application:
+                        description: (Attributes) Application matching criteria (see
+                          below for nested schema)
+                        properties:
+                          appCategory:
+                            description: (Attributes Set) Application categories (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    App category ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    App category name
+                                  type: string
+                              type: object
+                            type: array
+                          application:
+                            description: (Attributes) Application matching criteria
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Application ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Application name
+                                  type: string
+                              type: object
+                            type: array
+                          country:
+                            description: (Attributes Set) Countries (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Country ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Country name
+                                  type: string
+                              type: object
+                            type: array
+                          customApp:
+                            description: (Attributes Set) Custom applications (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Custom app ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Custom app name
+                                  type: string
+                              type: object
+                            type: array
+                          customCategory:
+                            description: (Attributes Set) Custom categories (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Custom category ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Custom category name
+                                  type: string
+                              type: object
+                            type: array
+                          customService:
+                            description: (Attributes) Custom service definition (see
+                              below for nested schema)
+                            properties:
+                              port:
+                                description: |-
+                                  (List of String) Port list
+                                  Port list
+                                items:
+                                  type: string
+                                type: array
+                              portRange:
+                                description: (Attributes) Port range (see below for
+                                  nested schema)
+                                properties:
+                                  from:
+                                    description: |-
+                                      (String) Start port
+                                      Start port
+                                    type: string
+                                  to:
+                                    description: |-
+                                      (String) End port
+                                      End port
+                                    type: string
+                                type: object
+                              protocol:
+                                description: |-
+                                  (String) Protocol (TCP, UDP, ICMP, ANY)
+                                  Protocol (TCP, UDP, ICMP, ANY)
+                                type: string
+                            type: object
+                          customServiceIp:
+                            description: (Attributes) Custom service IP definition
+                              (see below for nested schema)
+                            properties:
+                              ip:
+                                description: |-
+                                  (List of String) IPv4 address list
+                                  IP address
+                                type: string
+                              ipRange:
+                                description: (Attributes List) IP address ranges (see
+                                  below for nested schema)
+                                properties:
+                                  from:
+                                    description: |-
+                                      (String) Start port
+                                      Start IP
+                                    type: string
+                                  to:
+                                    description: |-
+                                      (String) End port
+                                      End IP
+                                    type: string
+                                type: object
+                              name:
+                                description: |-
+                                  (String) Name of the rule
+                                  Service name
+                                type: string
+                            type: object
+                          domain:
+                            description: |-
+                              (List of String) Domain list
+                              Domain list
+                            items:
+                              type: string
+                            type: array
+                          fqdn:
+                            description: |-
+                              (List of String) FQDN list
+                              FQDN list
+                            items:
+                              type: string
+                            type: array
+                          globalIpRange:
+                            description: (Attributes Set) Global IP ranges (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Global IP range ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Global IP range name
+                                  type: string
+                              type: object
+                            type: array
+                          ip:
+                            description: |-
+                              (List of String) IPv4 address list
+                              IPv4 address list
+                            items:
+                              type: string
+                            type: array
+                          ipRange:
+                            description: (Attributes List) IP address ranges (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                from:
+                                  description: |-
+                                    (String) Start port
+                                    Range start IP address
+                                  type: string
+                                to:
+                                  description: |-
+                                    (String) End port
+                                    Range end IP address
+                                  type: string
+                              type: object
+                            type: array
+                          remoteAsn:
+                            description: |-
+                              (List of String) Remote ASN list
+                              Remote ASN list
+                            items:
+                              type: string
+                            type: array
+                          service:
+                            description: (Attributes Set) Services (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Service ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Service name
+                                  type: string
+                              type: object
+                            type: array
+                          subnet:
+                            description: |-
+                              (List of String) Subnet list
+                              Subnet list
+                            items:
+                              type: string
+                            type: array
+                          tlsInspectCategory:
+                            description: |-
+                              (String) TLS Inspection category (POPULAR_CLOUD_APPS, STREAMING_MEDIA)
+                              TLS Inspection category (POPULAR_CLOUD_APPS, STREAMING_MEDIA)
+                            type: string
+                        type: object
+                      connectionOrigin:
+                        description: |-
+                          (String) Connection origin filter (ANY, REMOTE, SITE)
+                          Connection origin filter (ANY, REMOTE, SITE)
+                        type: string
+                      country:
+                        description: (Attributes Set) Countries (see below for nested
+                          schema)
+                        items:
+                          properties:
+                            id:
+                              description: |-
+                                (String) Identifier of the TLS Inspection Rule
+                                Country ID
+                              type: string
+                            name:
+                              description: |-
+                                (String) Name of the rule
+                                Country name
+                              type: string
+                          type: object
+                        type: array
+                      description:
+                        description: |-
+                          (String) Description of the rule
+                          Description of the rule
+                        type: string
+                      devicePostureProfile:
+                        description: (Attributes Set) Device posture profiles (see
+                          below for nested schema)
+                        items:
+                          properties:
+                            id:
+                              description: |-
+                                (String) Identifier of the TLS Inspection Rule
+                                Device posture profile ID
+                              type: string
+                            name:
+                              description: |-
+                                (String) Name of the rule
+                                Device posture profile name
+                              type: string
+                          type: object
+                        type: array
+                      enabled:
+                        description: |-
+                          (Boolean) Attribute to define rule status (enabled or disabled)
+                          Attribute to define rule status (enabled or disabled)
+                        type: boolean
+                      id:
+                        description: |-
+                          (String) Identifier of the TLS Inspection Rule
+                          ID of the rule
+                        type: string
+                      name:
+                        description: |-
+                          (String) Name of the rule
+                          Name of the rule
+                        type: string
+                      platform:
+                        description: |-
+                          (String) Platform filter (ANDROID, EMBEDDED, IOS, LINUX, MACOS, WINDOWS)
+                          Platform filter (ANDROID, EMBEDDED, IOS, LINUX, MACOS, WINDOWS)
+                        type: string
+                      source:
+                        description: (Attributes) Source traffic matching criteria.
+                          Logical 'OR' is applied within the criteria set. Logical
+                          'AND' is applied between criteria sets. (see below for nested
+                          schema)
+                        properties:
+                          floatingSubnet:
+                            description: (Attributes Set) Floating subnets (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Floating subnet ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Floating subnet name
+                                  type: string
+                              type: object
+                            type: array
+                          globalIpRange:
+                            description: (Attributes Set) Global IP ranges (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Global IP range ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Global IP range name
+                                  type: string
+                              type: object
+                            type: array
+                          group:
+                            description: (Attributes Set) Groups (see below for nested
+                              schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Group name
+                                  type: string
+                              type: object
+                            type: array
+                          host:
+                            description: (Attributes Set) Hosts and servers defined
+                              for your account (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Host ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Host name
+                                  type: string
+                              type: object
+                            type: array
+                          ip:
+                            description: |-
+                              (List of String) IPv4 address list
+                              IPv4 address list
+                            items:
+                              type: string
+                            type: array
+                          ipRange:
+                            description: (Attributes List) IP address ranges (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                from:
+                                  description: |-
+                                    (String) Start port
+                                    Range start IP address
+                                  type: string
+                                to:
+                                  description: |-
+                                    (String) End port
+                                    Range end IP address
+                                  type: string
+                              type: object
+                            type: array
+                          networkInterface:
+                            description: (Attributes Set) Network interfaces (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Network interface ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Network interface name
+                                  type: string
+                              type: object
+                            type: array
+                          site:
+                            description: (Attributes Set) Sites defined for your account
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Site ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Site name
+                                  type: string
+                              type: object
+                            type: array
+                          siteNetworkSubnet:
+                            description: (Attributes Set) Site network subnets (see
+                              below for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    Site network subnet ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    Site network subnet name
+                                  type: string
+                              type: object
+                            type: array
+                          subnet:
+                            description: |-
+                              (List of String) Subnet list
+                              Subnet list
+                            items:
+                              type: string
+                            type: array
+                          systemGroup:
+                            description: (Attributes Set) System groups (see below
+                              for nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    System group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    System group name
+                                  type: string
+                              type: object
+                            type: array
+                          user:
+                            description: (Attributes Set) Users (see below for nested
+                              schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    User ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    User name
+                                  type: string
+                              type: object
+                            type: array
+                          usersGroup:
+                            description: (Attributes Set) User groups (see below for
+                              nested schema)
+                            items:
+                              properties:
+                                id:
+                                  description: |-
+                                    (String) Identifier of the TLS Inspection Rule
+                                    User group ID
+                                  type: string
+                                name:
+                                  description: |-
+                                    (String) Name of the rule
+                                    User group name
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      untrustedCertificateAction:
+                        description: |-
+                          (String) Action for untrusted certificates (ALLOW, BLOCK, PROMPT)
+                          Action for untrusted certificates (ALLOW, BLOCK, PROMPT)
+                        type: string
+                    type: object
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
